@@ -1,0 +1,1 @@
+export interface PaginationRequest{ page:number; pageSize:number; sortBy?:string; sortDirection?:'asc'|'desc'; } export interface TableFilterState{ search?:string; fromDate?:string; toDate?:string; status?:string; operator?:string; zone?:string; }

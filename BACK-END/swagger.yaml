@@ -1,0 +1,1802 @@
+openapi: 3.0.3
+info:
+  title: Dispensador de Agua API
+  version: 1.0.0
+  description: |
+    Contrato OpenAPI generado desde el backend actual.
+    Incluye autenticacion JWT, validaciones y formatos de respuesta.
+
+servers:
+  - url: http://localhost:7636/backend-dispensador-agua-api
+    description: Local Docker
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Auth
+  - name: Catalogos
+  - name: Maestros
+  - name: Abastecimientos
+  - name: Tickets
+  - name: Arqueo
+
+paths:
+  /login:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Login de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+            examples:
+              login:
+                value:
+                  username: operador
+                  password: "123456"
+      responses:
+        '200':
+          description: Login correcto
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/LoginData'
+        '422':
+          description: Datos incompletos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Usuario inactivo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /me:
+    get:
+      tags: [Auth]
+      summary: Usuario autenticado actual
+      responses:
+        '200':
+          description: Sesion valida
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /catalogs/products:
+    get:
+      tags: [Catalogos]
+      summary: Lista productos activos
+      responses:
+        '200':
+          description: Productos obtenidos
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /catalogs/zones:
+    get:
+      tags: [Catalogos]
+      summary: Lista zonas publicadas y activas
+      responses:
+        '200':
+          description: Zonas obtenidas
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Zone'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /sync/catalogs:
+    get:
+      tags: [Catalogos]
+      summary: Sincroniza catalogos
+      responses:
+        '200':
+          description: Catalogos sincronizados
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          products:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Product'
+                          zones:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Zone'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ─────────────────────── MAESTROS: PRODUCTOS ───────────────────────
+
+  /products:
+    get:
+      tags: [Maestros]
+      summary: Lista todos los productos (incluye inactivos)
+      responses:
+        '200':
+          description: Productos obtenidos
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ProductAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Maestros]
+      summary: Crea un producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+            examples:
+              nuevo:
+                value:
+                  code: AGP
+                  name: Agua Potable
+                  unit_measure: GAL
+                  unit_price: 12.50
+                  base_amount: 10.00
+      responses:
+        '201':
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ProductAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Código de producto duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '422':
+          description: Datos incompletos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /products/{id}:
+    get:
+      tags: [Maestros]
+      summary: Obtiene un producto por ID
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ProductAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Maestros]
+      summary: Actualiza un producto (campos parciales)
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+            examples:
+              actualizar_precio:
+                value:
+                  unit_price: 15.00
+                  is_active: 1
+      responses:
+        '200':
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ProductAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Código duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+    delete:
+      tags: [Maestros]
+      summary: Desactiva un producto (soft delete)
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Producto desactivado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ─────────────────────── MAESTROS: ZONAS ───────────────────────
+
+  /zones:
+    get:
+      tags: [Maestros]
+      summary: Lista todas las zonas (incluye inactivas)
+      responses:
+        '200':
+          description: Zonas obtenidas
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ZoneAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Maestros]
+      summary: Crea una zona
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZoneInput'
+            examples:
+              nueva:
+                value:
+                  code: ZSR
+                  name: Zona Sur
+                  district: Ica
+                  province: Ica
+                  department: Ica
+                  geojson:
+                    type: Polygon
+                    coordinates: [[[-75.73,-14.07],[-75.72,-14.07],[-75.72,-14.08],[-75.73,-14.08],[-75.73,-14.07]]]
+                  is_published: 1
+      responses:
+        '201':
+          description: Zona creada
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ZoneAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Código de zona duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '422':
+          description: Datos incompletos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /zones/{id}:
+    get:
+      tags: [Maestros]
+      summary: Obtiene una zona por ID
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Zona encontrada
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ZoneAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Maestros]
+      summary: Actualiza una zona (campos parciales)
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZoneInput'
+            examples:
+              actualizar_nombre:
+                value:
+                  name: Zona Sur Ampliada
+                  is_published: 1
+      responses:
+        '200':
+          description: Zona actualizada
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ZoneAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Código duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+    delete:
+      tags: [Maestros]
+      summary: Desactiva una zona (soft delete)
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Zona desactivada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ─────────────────────── MAESTROS: USUARIOS ───────────────────────
+
+  /users:
+    get:
+      tags: [Maestros]
+      summary: Lista todos los usuarios
+      responses:
+        '200':
+          description: Usuarios obtenidos
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Maestros]
+      summary: Crea un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+            examples:
+              nuevo:
+                value:
+                  username: jperez
+                  password: "Segura@2026"
+                  full_name: Juan Pérez
+                  role: OPERADOR
+                  dni: "12345678"
+                  phone: "999888777"
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Username duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '422':
+          description: Datos incompletos o rol/estado inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /users/{id}:
+    get:
+      tags: [Maestros]
+      summary: Obtiene un usuario por ID
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Maestros]
+      summary: Actualiza un usuario (campos parciales)
+      description: |
+        Si se envía `password`, se rehashea con bcrypt.
+        No se retorna `password_hash` en ninguna respuesta.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+            examples:
+              cambiar_estado:
+                value:
+                  status: BLOCKED
+              cambiar_password:
+                value:
+                  password: "NuevaClave@2026"
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserAdmin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Username duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '422':
+          description: Rol o estado inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+    delete:
+      tags: [Maestros]
+      summary: Desactiva un usuario (status → INACTIVE)
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Usuario desactivado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ─────────────────────── ABASTECIMIENTOS ───────────────────────
+
+  /abastecimientos:
+    get:
+      tags: [Abastecimientos]
+      summary: Lista abastecimientos con filtros y paginación
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha exacta de creación (YYYY-MM-DD)
+        - in: query
+          name: from
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha inicial del rango (YYYY-MM-DD). Debe enviarse junto con to.
+        - in: query
+          name: to
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha final del rango (YYYY-MM-DD). Debe enviarse junto con from.
+         - in: query
+          name: local_id
+          schema:
+            type: string
+          description: Busca por identificador local del abastecimiento (local_id)
+        - in: query
+          name: ticket
+          schema:
+            type: string
+          description: Busca por número de ticket o external_ticket_number
+        - in: query
+          name: receiver
+          schema:
+            type: string
+          description: Busca por nombre de receptor
+        - in: query
+          name: driver
+          schema:
+            type: string
+          description: Busca por nombre del conductor (driver_name)
+        - in: query
+          name: conductor
+          schema:
+            type: string
+          description: Alias de driver (compatibilidad)
+        - in: query
+          name: product
+          schema:
+            type: string
+          description: Busca por nombre o código de producto
+        - in: query
+          name: zone_method
+          schema:
+            type: string
+            enum: [AUTO, MANUAL, UNRESOLVED]
+          description: Método de asignación de zona
+        - in: query
+          name: sync_status
+          schema:
+            type: string
+            enum: [PENDING, SYNCED, ERROR]
+          description: Estado de sincronización
+        - in: query
+          name: print_status
+          schema:
+            type: string
+            enum: [PENDING, PRINTED, ERROR]
+          description: Estado de impresión
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Desplazamiento para paginación
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 20
+          description: Tamaño de página
+      responses:
+        '200':
+          description: Abastecimientos obtenidos
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AbastecimientoPaginated'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Parámetros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+    post:
+      tags: [Abastecimientos]
+      summary: Registra abastecimiento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbastecimientoPayload'
+      responses:
+        '201':
+          description: Abastecimiento registrado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: idLocal duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '422':
+          description: Error de validacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /abastecimientos/{id}:
+    get:
+      tags: [Abastecimientos]
+      summary: Obtiene detalle de un abastecimiento
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Detalle encontrado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AbastecimientoDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /sync/abastecimientos:
+    post:
+      tags: [Abastecimientos]
+      summary: Sincronizacion batch de abastecimientos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: [items]
+                  properties:
+                    items:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/AbastecimientoPayload'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/AbastecimientoPayload'
+      responses:
+        '200':
+          description: Sincronizacion correcta
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id_local:
+                              type: string
+                              nullable: true
+                            id_remoto:
+                              type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: idLocal duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '422':
+          description: Error de validacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /tickets:
+    get:
+      tags: [Tickets]
+      summary: Lista tickets con filtros y paginación
+      description: |
+        Comportamiento:
+        - Sin date y sin rango: tickets del dia actual.
+        - Con date: tickets de la fecha solicitada.
+        - Con from/to (o fecha_desde/fecha_hasta): aplica rango.
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Busca por número de ticket o nombre/usuario del operador
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [PENDING, SYNCED, ERROR]
+          description: Estado del ticket (sync_status del abastecimiento)
+        - in: query
+          name: date
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha exacta en formato YYYY-MM-DD
+        - in: query
+          name: from
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha inicial del rango (YYYY-MM-DD)
+        - in: query
+          name: to
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha final del rango (YYYY-MM-DD)
+        - in: query
+          name: fecha_desde
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Alias legado de from (compatibilidad)
+        - in: query
+          name: fecha_hasta
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Alias legado de to (compatibilidad)
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Desplazamiento para paginación
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 20
+          description: Tamaño de página
+      responses:
+        '200':
+          description: Tickets obtenidos
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/TicketPaginated'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: date invalida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /tickets/{id}:
+    get:
+      tags: [Tickets]
+      summary: Detalle de ticket
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ticket encontrado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/TicketDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Ticket no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /tickets/{id}/reprint:
+    post:
+      tags: [Tickets]
+      summary: Registra reimpresion de ticket
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reimpresion registrada
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          ticket_id:
+                            type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Ticket no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /arqueo/daily:
+    get:
+      tags: [Arqueo]
+      summary: Arqueo por dia o rango con detalle por venta
+      description: |
+        Regla de acceso por rol:
+        - ADMIN: puede consultar toda la venta o filtrar por `user_id`.
+        - OPERADOR (y roles no ADMIN): solo ve su propia venta según el usuario del token.
+          Si envía `user_id`, se ignora y se usa el id del token.
+        Filtros de fecha:
+        - Si envía `start` y `end`, se aplica rango (inclusive).
+        - Si no envía rango, usa `date` (o `fecha`) como antes.
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha (YYYY-MM-DD)
+        - in: query
+          name: fecha
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Alias de date (compatibilidad)
+        - in: query
+          name: start
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha inicio del rango (YYYY-MM-DD). Debe enviarse junto con end.
+        - in: query
+          name: end
+          schema:
+            type: string
+            pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+          description: Fecha fin del rango (YYYY-MM-DD). Debe enviarse junto con start.
+        - in: query
+          name: user_id
+          schema:
+            type: integer
+          description: Filtro opcional por usuario
+      responses:
+        '200':
+          description: Arqueo obtenido
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ArqueoDaily'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: date invalida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    IdPath:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+
+  responses:
+    Unauthorized:
+      description: Token no proporcionado, invalido o expirado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+  schemas:
+    SuccessEnvelope:
+      type: object
+      properties:
+        total_rows:
+          type: integer
+        status:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          additionalProperties: true
+        message:
+          type: string
+      required: [total_rows, status, data, message]
+
+    ErrorEnvelope:
+      type: object
+      properties:
+        total_rows:
+          type: integer
+        status:
+          type: boolean
+          enum: [false]
+        data:
+          type: object
+          additionalProperties: true
+        message:
+          type: string
+      required: [total_rows, status, data, message]
+
+    UserSession:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        nombre:
+          type: string
+        role:
+          type: string
+          enum: [ADMIN, OPERADOR, SUPERVISOR]
+        correlativo:
+          type: integer
+          minimum: 1
+      required: [id, username, nombre, role, correlativo]
+
+    LoginData:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserSession'
+      required: [token, user]
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+        unit_measure:
+          type: string
+        unit_price:
+          type: number
+        base_amount:
+          type: number
+        is_active:
+          type: integer
+      required: [id, code, name]
+
+    Zone:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        nombre:
+          type: string
+        district:
+          type: string
+        province:
+          type: string
+        department:
+          type: string
+        polygon:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Polygon
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: number
+        estado:
+          type: boolean
+      required: [id, code, nombre]
+
+    AbastecimientoPayload:
+      type: object
+      required:
+        - idLocal
+        - cantidad
+        - producto
+        - recibidoPor
+        - zonaNombreSnapshot
+        - latitud
+        - longitud
+        - precisionGps
+        - fechaGps
+        - importe
+      properties:
+        idLocal:
+          type: string
+          description: Identificador local de la operación
+        cantidad:
+          type: number
+          description: Cantidad del producto
+        producto:
+          oneOf:
+            - type: integer
+              minimum: 1
+              description: ID del producto (requerido)
+            - type: object
+              properties:
+                id:
+                  type: integer
+                  minimum: 1
+              required: [id]
+              description: Objeto producto con ID
+        conductor:
+          type: string
+          description: Nombre del conductor/vendedor (opcional). Si no se envía, el backend usa el nombre del usuario autenticado (token) como fallback.
+        recibidoPor:
+          type: string
+          description: Nombre de quien recibe el producto
+        zonaId:
+          type: integer
+          description: ID de la zona asignada (opcional)
+        zonaNombreSnapshot:
+          type: string
+          description: Nombre de la zona al momento del registro
+        latitud:
+          type: number
+          description: Coordenada GPS latitud
+        longitud:
+          type: number
+          description: Coordenada GPS longitud
+        precisionGps:
+          type: number
+          description: Precisión del GPS en metros
+        fechaGps:
+          type: string
+          description: Fecha/datetime de captura GPS (ISO 8601 o YYYY-MM-DD HH:MM:SS)
+        horaInicio:
+          type: string
+          description: Hora de inicio (HH:MM:SS o datetime completo, opcional)
+        horaFin:
+          type: string
+          description: Hora de fin (HH:MM:SS o datetime completo, opcional)
+        importe:
+          type: number
+          description: Monto de la transacción
+        metodoZona:
+          type: string
+          enum: [AUTO, MANUAL, UNRESOLVED]
+          default: UNRESOLVED
+          description: "Método de asignación de zona: AUTO (asignada automáticamente), MANUAL (usuario eligió), UNRESOLVED (sin asignar). Default: UNRESOLVED"
+        estadoSincronizacion:
+          type: string
+          enum: [PENDING, SYNCED, ERROR]
+          default: PENDING
+          description: "Estado de sincronización con servidor. Default: PENDING (nuevo registro espera sincronización)"
+        estadoImpresion:
+          type: string
+          enum: [PENDING, PRINTED, ERROR]
+          default: PENDING
+          description: "Estado de impresión. Default: PENDING (nuevo registro espera impresión)"
+        creadoOffline:
+          type: boolean
+          description: Indica si se creó sin conexión a internet (opcional)
+
+    AbastecimientoListItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        local_id:
+          type: string
+        external_ticket_number:
+          type: string
+          nullable: true
+        ticket_number:
+          type: string
+          nullable: true
+        product_id:
+          type: integer
+        product_code:
+          type: string
+        product_name:
+          type: string
+        quantity:
+          type: number
+        unit_measure:
+          type: string
+        amount:
+          type: number
+        receiver_name:
+          type: string
+        receiver_dni:
+          type: string
+          nullable: true
+        driver_name:
+          type: string
+        zone_id:
+          type: integer
+          nullable: true
+        zone_name:
+          type: string
+          nullable: true
+        zone_name_snapshot:
+          type: string
+          nullable: true
+        zone_assignment_method:
+          type: string
+          enum: [AUTO, MANUAL, UNRESOLVED]
+        sync_status:
+          type: string
+          enum: [PENDING, SYNCED, ERROR]
+        print_status:
+          type: string
+          enum: [PENDING, PRINTED, ERROR]
+        sync_attempts:
+          type: integer
+        created_offline:
+          type: integer
+        started_at:
+          type: string
+        finished_at:
+          type: string
+        gps_captured_at:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        user_id:
+          type: integer
+        username:
+          type: string
+        full_name:
+          type: string
+
+    AbastecimientoPagination:
+      type: object
+      properties:
+        offset:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        has_more:
+          type: boolean
+      required: [offset, limit, total, has_more]
+
+    AbastecimientoPaginated:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AbastecimientoListItem'
+        pagination:
+          $ref: '#/components/schemas/AbastecimientoPagination'
+      required: [items, pagination]
+
+    AbastecimientoDetail:
+      allOf:
+        - $ref: '#/components/schemas/AbastecimientoListItem'
+        - type: object
+          properties:
+            zone_code:
+              type: string
+              nullable: true
+            latitude:
+              type: number
+              nullable: true
+            longitude:
+              type: number
+              nullable: true
+            gps_accuracy:
+              type: number
+              nullable: true
+            last_sync_at:
+              type: string
+              nullable: true
+            sync_error_message:
+              type: string
+              nullable: true
+            printed_at:
+              type: string
+              nullable: true
+            reprint_count:
+              type: integer
+            notes:
+              type: string
+              nullable: true
+
+    Ticket:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+        abastecimiento_id:
+          type: integer
+        abastecimiento_codigo:
+          type: string
+        abastecimiento_code:
+          type: string
+        idLocal:
+          type: string
+        ticket_number:
+          type: string
+        ticket_code:
+          type: string
+        fecha_emision:
+          type: string
+        created_at:
+          type: string
+        date:
+          type: string
+        reprint_count:
+          type: integer
+        quantity:
+          oneOf:
+            - type: string
+            - type: number
+        liters:
+          oneOf:
+            - type: string
+            - type: number
+        amount:
+          oneOf:
+            - type: string
+            - type: number
+        total:
+          oneOf:
+            - type: string
+            - type: number
+        receiver_name:
+          type: string
+        received_by:
+          type: string
+        customer:
+          type: string
+        driver_name:
+          type: string
+        zone_name_snapshot:
+          type: string
+        zone_name:
+          type: string
+        zone:
+          type: string
+        user_id:
+          type: integer
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        full_name:
+          type: string
+          nullable: true
+        operador:
+          type: string
+          nullable: true
+        producto:
+          type: string
+        status:
+          type: string
+          enum: [SYNCED, PENDING, ERROR]
+
+    TicketPagination:
+      type: object
+      properties:
+        offset:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        has_more:
+          type: boolean
+      required: [offset, limit, total, has_more]
+
+    TicketPaginated:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ticket'
+        pagination:
+          $ref: '#/components/schemas/TicketPagination'
+      required: [items, pagination]
+
+    TicketDetail:
+      allOf:
+        - $ref: '#/components/schemas/Ticket'
+
+    ArqueoItem:
+      type: object
+      properties:
+        producto:
+          type: string
+        productName:
+          type: string
+        total_tickets:
+          type: integer
+        tickets:
+          type: integer
+        total_cubos:
+          type: number
+        quantity:
+          type: number
+        cubos:
+          type: number
+        total_amount:
+          type: number
+        total:
+          type: number
+        amount:
+          type: number
+
+    ArqueoDetailItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        abastecimiento_id:
+          type: integer
+        abastecimiento_codigo:
+          type: string
+        abastecimiento_code:
+          type: string
+        idLocal:
+          type: string
+        ticket_number:
+          type: string
+        ticket_code:
+          type: string
+        fecha_emision:
+          type: string
+        created_at:
+          type: string
+        date:
+          type: string
+        receiver_name:
+          type: string
+        received_by:
+          type: string
+        customer:
+          type: string
+        producto:
+          type: string
+        productName:
+          type: string
+        quantity:
+          type: number
+        liters:
+          type: number
+        cubos:
+          type: number
+        amount:
+          type: number
+        total:
+          type: number
+        zone_name_snapshot:
+          type: string
+        zone_name:
+          type: string
+        zone:
+          type: string
+        status:
+          type: string
+          enum: [SYNCED, PENDING, ERROR]
+
+    ArqueoDaily:
+      type: object
+      properties:
+        fecha:
+          type: string
+        date:
+          type: string
+        start_date:
+          type: string
+          nullable: true
+        end_date:
+          type: string
+          nullable: true
+        range_applied:
+          type: boolean
+        total_registros:
+          type: integer
+        totalTickets:
+          type: integer
+        total_monto:
+          type: number
+        totalAmount:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArqueoItem'
+        items_grouped:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArqueoItem'
+        items_detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArqueoDetailItem'
+      required: [fecha, total_registros, total_monto, items_grouped, items_detail]
+
+    # ─────────────────────── MAESTROS ───────────────────────
+
+    ProductAdmin:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+          example: AGP
+        name:
+          type: string
+          example: Agua Potable
+        unit_measure:
+          type: string
+          example: GAL
+        unit_price:
+          type: number
+          example: 12.50
+        base_amount:
+          type: number
+          nullable: true
+          example: 10.00
+        is_active:
+          type: integer
+          enum: [0, 1]
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required: [id, code, name, unit_measure, unit_price, is_active]
+
+    ProductInput:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        unit_measure:
+          type: string
+          default: GAL
+        unit_price:
+          type: number
+        base_amount:
+          type: number
+          nullable: true
+        is_active:
+          type: integer
+          enum: [0, 1]
+          default: 1
+
+    ZoneAdmin:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+          example: ZCT
+        name:
+          type: string
+          example: Zona Centro
+        district:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+        department:
+          type: string
+          nullable: true
+        geojson:
+          type: object
+          description: GeoJSON Polygon
+        is_published:
+          type: integer
+          enum: [0, 1]
+        is_active:
+          type: integer
+          enum: [0, 1]
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required: [id, code, name, is_published, is_active]
+
+    ZoneInput:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        district:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+        department:
+          type: string
+          nullable: true
+        geojson:
+          type: object
+          description: GeoJSON Polygon
+        is_published:
+          type: integer
+          enum: [0, 1]
+          default: 1
+        is_active:
+          type: integer
+          enum: [0, 1]
+          default: 1
+
+    UserAdmin:
+      type: object
+      description: El campo password_hash nunca se expone en respuestas.
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        full_name:
+          type: string
+        role:
+          type: string
+          enum: [ADMIN, OPERADOR, SUPERVISOR]
+        dni:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [ACTIVE, BLOCKED, INACTIVE]
+        correlativo:
+          type: integer
+          minimum: 1
+        last_login_at:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required: [id, username, full_name, role, status, correlativo]
+
+    UserInput:
+      type: object
+      description: |
+        Para crear: username, password y full_name son obligatorios.
+        Para actualizar: todos los campos son opcionales.
+        Si se envía password, se rehashea con bcrypt.
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          description: Contraseña en texto plano (se almacena hasheada)
+        full_name:
+          type: string
+        role:
+          type: string
+          enum: [ADMIN, OPERADOR, SUPERVISOR]
+          default: OPERADOR
+        dni:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [ACTIVE, BLOCKED, INACTIVE]
+          default: ACTIVE

@@ -1,0 +1,57 @@
+<ion-content [scrollEvents]="true" (ionScroll)="hideCellDetail()">
+  <div class="page-shell">
+    <div class="top-hero"><p class="eyebrow">Cierre diario</p><h1 class="page-title">Arqueo</h1><p class="page-subtitle">Resumen de ventas, operaciones registradas y corte del día.</p></div>
+    <div class="glass-card section-card">
+      <p class="ticket-meta" style="margin:0 0 12px;">Fecha: {{ selectedDate }}</p>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-label">Tickets</div><div class="kpi-value">{{ data.totalTickets }}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Total</div><div class="kpi-value">S/ {{ data.totalAmount | number:'1.2-2' }}</div></div>
+      </div>
+
+      <div class="arqueo-items" style="margin-top:16px;">
+        <div class="ticket-meta" style="font-weight:700; margin-bottom:8px;">Detalle por venta</div>
+        <div class="arqueo-item arqueo-head">
+          <span>Comprador</span>
+          <span>Producto</span>
+          <span>Importe</span>
+        </div>
+        <div class="arqueo-item" *ngFor="let item of data.items ?? []">
+          <span class="expandable-cell" (click)="showCellDetail($event, 'Comprador', item.customerName)">{{ item.customerName || '-' }}</span>
+          <span class="expandable-cell" (click)="showCellDetail($event, 'Producto', item.productName)">{{ item.productName }}</span>
+          <span>S/ {{ item.amount | number:'1.2-2' }}</span>
+        </div>
+        <p class="ticket-meta" *ngIf="!(data.items?.length)">Sin items para esta fecha.</p>
+      </div>
+
+      <ion-button expand="block" class="w-button dark" style="margin-top:16px" (click)="print()">Imprimir arqueo</ion-button>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="arqueo-fab">
+    <ion-fab-button class="secondary-fab" (click)="openFilterModal()">
+      <ion-icon name="calendar-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <app-date-filter-modal
+    [isOpen]="showFilterModal"
+    [title]="'Filtrar arqueo por fecha'"
+    [isOnline]="isOnline"
+    [selectedDate]="selectedDate"
+    (dismiss)="closeFilterModal()"
+    (apply)="applyDateFilter($event)"
+    (resetToday)="resetTodayFilter()"
+  ></app-date-filter-modal>
+
+  <div class="cell-tooltip-backdrop" *ngIf="tooltipOpen" (click)="hideCellDetail()"></div>
+  <div
+    class="cell-tooltip"
+    *ngIf="tooltipOpen"
+    [style.top]="tooltipTop"
+    [style.left]="tooltipLeft"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="cell-tooltip-title">{{ tooltipTitle }}</div>
+    <div class="cell-tooltip-value">{{ tooltipValue }}</div>
+  </div>
+</ion-content>

@@ -1,0 +1,1 @@
+import { Injectable } from '@angular/core'; import mapboxgl from 'mapbox-gl'; import { environment } from '../../../environments/environment'; @Injectable({providedIn:'root'}) export class MapConfigService{ applyToken(){ mapboxgl.accessToken=environment.mapboxToken; } get tokenReady(){ return !!environment.mapboxToken && environment.mapboxToken!=='REPLACE_WITH_MAPBOX_TOKEN'; } }

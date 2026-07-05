@@ -1,0 +1,72 @@
+# ============================================================================
+# .htaccess PARA PRODUCCIÓN / CERTIFICACIÓN
+# Renombrar a .htaccess en el servidor
+# ============================================================================
+
+RewriteEngine On
+
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ public/index.php [QSA,L]
+
+# ============================================================================
+# SEGURIDAD - Restricciones de acceso
+# ============================================================================
+
+<Files "composer.lock">
+    Require all denied
+</Files>
+
+# No listar directorios
+Options -Indexes
+
+# Bloquear archivos ocultos (.git, .env, .htpasswd, etc.)
+<FilesMatch "^\.(.*)$">
+  Require all denied
+</FilesMatch>
+
+# Bloquear extensiones sensibles
+<FilesMatch "\.(env|ini|conf|log|bak|swp|sql|ya?ml|pem|key|p12|crt|cer)$">
+  Require all denied
+</FilesMatch>
+
+# Bloquear archivos de configuración
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|\.gitignore|\.gitattributes|SETUP\.md)$">
+  Require all denied
+</FilesMatch>
+
+# Proteger directorios sensibles
+RedirectMatch 403 ^/\.git
+RedirectMatch 403 ^/vendor
+RedirectMatch 403 ^/app
+RedirectMatch 403 ^/storage
+
+# ============================================================================
+# HEADERS DE SEGURIDAD
+# ============================================================================
+
+Header set X-Content-Type-Options "nosniff"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+Header always set Cache-Control "no-cache, no-store, must-revalidate"
+Header always set Pragma "no-cache"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+# ============================================================================
+# OPTIMIZACIÓN - Compresión y caché
+# ============================================================================
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# ============================================================================
+# PERFORMANCE - Protocolos
+# ============================================================================
+
+# Forzar HTTPS en producción (descomenta en servidor con SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

@@ -1,0 +1,57 @@
+<div class="login-shell">
+  <section class="brand-panel">
+    <div class="brand-surface">
+      <h1>Control administrativo del abastecimiento de agua</h1>
+      <p>
+        Gestiona usuarios, catálogos, zonas geográficas, tickets, arqueo y trazabilidad de sincronización
+        desde una interfaz corporativa preparada para escalar.
+      </p>
+
+      <div class="brand-metrics">
+        <div class="metric-card">
+          <strong>Operación offline-first</strong>
+          <span>Integración con app móvil/POS, sincronización diferida e impresión de tickets.</span>
+        </div>
+        <div class="metric-card">
+          <strong>Monitoreo centralizado</strong>
+          <span>Supervisa abastecimientos, arqueo diario, reimpresiones y estado de catálogo.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <mat-card class="content-card login-card">
+    <div class="login-header">
+      <img src="assets/logo-dispensor.png" alt="Isotipo SEMAPAM" />
+      <div>
+        <h2>Iniciar sesión</h2>
+        <p>Accede al portal administrativo para operaciones y control.</p>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username" autocomplete="username" />
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="form.controls.username.invalid">Ingresa tu usuario.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" autocomplete="current-password" />
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-error *ngIf="form.controls.password.invalid">Ingresa tu contraseña.</mat-error>
+      </mat-form-field>
+
+      <div class="login-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="loading">
+          <mat-icon>{{ loading ? 'hourglass_top' : 'login' }}</mat-icon>
+          {{ loading ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </div>
+    </form>
+
+    
+  </mat-card>
+</div>

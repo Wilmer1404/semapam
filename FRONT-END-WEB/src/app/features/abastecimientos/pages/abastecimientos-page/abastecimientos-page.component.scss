@@ -1,0 +1,38 @@
+.panel-card{padding-bottom:20px}
+.grid-span-2{grid-column:span 2}
+.filters-block{padding:14px 20px 6px;margin:0 20px 14px;border:1px solid #e2eaf3;border-radius:14px;background:#f8fbff;grid-template-columns:repeat(4,minmax(160px,1fr))}
+.compact{padding-bottom:6px}
+.filter-btn{height:40px;border-radius:10px;font-weight:600;min-width:118px;box-shadow:none}
+.filter-btn mat-icon{font-size:18px;width:18px;height:18px;margin-right:6px}
+.menu-icon{border-radius:10px;padding:4px;font-size:20px;width:28px;height:28px;display:grid;place-items:center}
+.menu-icon.excel{background:#e6f4ea;color:#1f7a3d}
+.menu-icon.pdf{background:#fdeaea;color:#ba1b1b}
+.menu-icon.csv{background:#eef3f7;color:#36546d}
+.table-meta{padding:0 20px 10px;color:#5c6f84;font-weight:600;font-size:12px;letter-spacing:.02em;text-transform:uppercase}
+.table-wrapper{margin:0 20px;border:1px solid #e2eaf3;border-radius:14px;overflow:auto;background:#fff;position:relative}
+.data-table{width:100%;min-width:980px}
+.data-table th.mat-mdc-header-cell{font-size:12px;font-weight:700;color:#31465d;text-transform:uppercase;letter-spacing:.04em;background:#f3f8fe}
+.data-table tr.mat-mdc-row{cursor:pointer}
+.data-table tr.mat-mdc-row:hover{background:#f7fbff}
+.row-selected{background:#eef5fd !important}
+.table-loading,.table-empty{padding:18px 20px;color:#5f7388;font-weight:600}
+.paginator-strip{margin:10px 20px 0;border:1px solid #e2eaf3;border-radius:12px;background:#fff}
+.detail-card{padding-bottom:20px}
+.detail-stack{padding:0 20px}
+.detail-stack p{margin:8px 0 0}
+.mini-audit-map{margin:16px 20px 0;height:200px;border-radius:12px;overflow:hidden;border:1px solid #e2eaf3;position:relative;background:#eef2f7}
+.map-no-coords-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#8ca0b5;background:rgba(238,242,247,.85);z-index:1;pointer-events:none;font-size:13px;font-weight:500}
+.map-no-coords-overlay mat-icon{font-size:28px;width:28px;height:28px;color:#aab8c7}
+.detail-loading{padding:0 20px 12px}
+
+@media (max-width:1200px){
+	.grid-span-2{grid-column:span 1}
+	.filters-block{grid-template-columns:repeat(2,minmax(180px,1fr))}
+}
+
+@media (max-width:768px){
+	.filters-block{grid-template-columns:1fr;padding:12px;margin:0 12px 12px}
+	.table-meta{padding:0 12px 10px}
+	.table-wrapper{margin:0 12px}
+	.paginator-strip{margin:10px 12px 0}
+}

@@ -1,0 +1,119 @@
+<div class="page-stack">
+  <app-base-page-header
+    title="Arqueo diario"
+    subtitle="Consulta consolidada de tickets, abastecimientos, montos y resumen por operador o producto."
+  >
+    <div class="date-range-shell">
+      <div class="date-range-fields">
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Desde</mat-label>
+          <input matInput [matDatepicker]="startPicker" [formControl]="startDateControl" />
+          <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Hasta</mat-label>
+          <input matInput [matDatepicker]="endPicker" [formControl]="endDateControl" />
+          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="quick-range-actions">
+        <button mat-stroked-button type="button" class="quick-range-btn btn-secondary" (click)="setTodayRange()">Hoy</button>
+        <button mat-stroked-button type="button" class="quick-range-btn btn-secondary" (click)="setLastSevenDaysRange()">Últimos 7 días</button>
+        <button mat-stroked-button type="button" class="quick-range-btn btn-secondary" (click)="setLastMonthRange()">Último mes</button>
+      </div>
+    </div>
+  </app-base-page-header>
+
+  <div *ngIf="loading" class="query-loading">Consultando arqueo...</div>
+
+  <div *ngIf="arqueo$ | async as arqueo" class="page-stack">
+    <section class="grid-4">
+      <app-quick-stat-card label="Tickets" [value]="arqueo.data.total_tickets + ''" icon="receipt_long" tone="success"></app-quick-stat-card>
+      <app-quick-stat-card label="Abastecimientos" [value]="arqueo.data.total_abastecimientos + ''" icon="water_drop" tone="info"></app-quick-stat-card>
+      <app-quick-stat-card label="Monto total" [value]="'S/ ' + arqueo.data.total_monto" icon="payments" tone="warning"></app-quick-stat-card>
+      <app-quick-stat-card [label]="arqueo.data.range_applied ? 'Rango consultado' : 'Fecha consultada'" [value]="getPeriodLabel(arqueo.data)" icon="calendar_month" tone="info"></app-quick-stat-card>
+    </section>
+
+    <section class="grid-2">
+      <mat-card class="content-card panel-card">
+        <div class="table-toolbar"><div><h3>Resumen por zona</h3><p class="muted">Agrupación consolidada a partir del detalle diario.</p></div></div>
+        <div class="soft-list list-content">
+          <div class="soft-panel" *ngFor="let item of arqueo.data.zone_summary">
+            <div class="kpi-row"><strong>{{ item.label }}</strong><span class="status-chip status-info">{{ item.total_tickets }} tickets</span></div>
+            <div class="kpi-row"><span class="muted">Cantidad total</span><strong>{{ item.total_quantity }}</strong></div>
+            <div class="kpi-row"><span class="muted">Total monto</span><strong>S/ {{ item.total_amount }}</strong></div>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="content-card panel-card">
+        <div class="table-toolbar"><div><h3>Resumen por producto</h3><p class="muted">Cantidad despachada y monto por producto.</p></div></div>
+        <div class="soft-list list-content">
+          <div class="soft-panel" *ngFor="let item of arqueo.data.product_summary">
+            <div class="kpi-row"><strong>{{ item.label }}</strong><span class="status-chip status-success">{{ item.total_quantity }}</span></div>
+            <div class="kpi-row"><span class="muted">Tickets</span><strong>{{ item.total_tickets }}</strong></div>
+            <div class="kpi-row"><span class="muted">Total monto</span><strong>S/ {{ item.total_amount }}</strong></div>
+          </div>
+        </div>
+      </mat-card>
+    </section>
+
+    <mat-card class="content-card panel-card">
+      <div class="table-toolbar">
+        <div><h3>Detalle del arqueo</h3><p class="muted">Detalle completo de tickets emitidos, producto, cantidad, zona y estado.</p></div>
+        <div class="header-actions">
+          <button mat-stroked-button class="filter-btn btn-secondary" [matMenuTriggerFor]="exportMenu" [disabled]="!hasDetailData">
+            <mat-icon>download</mat-icon>
+            Exportar
+          </button>
+          <mat-menu #exportMenu="matMenu">
+            <button mat-menu-item (click)="exportArqueoAsXlsx()">
+              <mat-icon class="menu-icon excel">grid_on</mat-icon>
+              <span>Excel (.xlsx)</span>
+            </button>
+            <button mat-menu-item (click)="exportArqueoAsPdf()">
+              <mat-icon class="menu-icon pdf">picture_as_pdf</mat-icon>
+              <span>PDF (.pdf)</span>
+            </button>
+            <button mat-menu-item (click)="exportArqueoAsCsv()">
+              <mat-icon class="menu-icon csv">description</mat-icon>
+              <span>CSV (.csv)</span>
+            </button>
+          </mat-menu>
+          <button mat-flat-button color="primary" (click)="printArqueo()" [disabled]="!hasDetailData">
+            <mat-icon>print</mat-icon>
+            Imprimir
+          </button>
+        </div>
+      </div>
+      <div class="table-wrapper detail-table-wrapper">
+        <table mat-table [dataSource]="pagedDetails" class="data-table">
+          <ng-container matColumnDef="ticket_number"><th mat-header-cell *matHeaderCellDef>Ticket</th><td mat-cell *matCellDef="let row">{{ row.abastecimiento_codigo }}</td></ng-container>
+          <ng-container matColumnDef="fecha_emision"><th mat-header-cell *matHeaderCellDef>Fecha emisión</th><td mat-cell *matCellDef="let row">{{ row.fecha_emision }}</td></ng-container>
+          <ng-container matColumnDef="receiver_name"><th mat-header-cell *matHeaderCellDef>Receptor</th><td mat-cell *matCellDef="let row">{{ row.receiver_name }}</td></ng-container>
+          <ng-container matColumnDef="product_name"><th mat-header-cell *matHeaderCellDef>Producto</th><td mat-cell *matCellDef="let row">{{ row.product_name }}</td></ng-container>
+          <ng-container matColumnDef="quantity"><th mat-header-cell *matHeaderCellDef>Cantidad</th><td mat-cell *matCellDef="let row">{{ row.quantity }}</td></ng-container>
+          <ng-container matColumnDef="amount"><th mat-header-cell *matHeaderCellDef>Monto</th><td mat-cell *matCellDef="let row">S/ {{ row.amount }}</td></ng-container>
+          <ng-container matColumnDef="zone_name"><th mat-header-cell *matHeaderCellDef>Zona</th><td mat-cell *matCellDef="let row">{{ row.zone_name }}</td></ng-container>
+          <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef>Estado</th><td mat-cell *matCellDef="let row"><span class="status-chip" [ngClass]="row.status === 'SYNCED' ? 'status-success' : (row.status === 'PENDING' ? 'status-warning' : 'status-error')">{{ row.status }}</span></td></ng-container>
+          <tr mat-header-row *matHeaderRowDef="['ticket_number','fecha_emision','receiver_name','product_name','quantity','amount','zone_name','status']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['ticket_number','fecha_emision','receiver_name','product_name','quantity','amount','zone_name','status']"></tr>
+        </table>
+      </div>
+      <mat-paginator
+        class="paginator-strip"
+        [length]="arqueo.data.details.length"
+        [pageSize]="detailPageSize"
+        [pageIndex]="detailPageIndex"
+        [pageSizeOptions]="detailPageSizeOptions"
+        showFirstLastButtons
+        (page)="onDetailPageChange($event)">
+      </mat-paginator>
+      <!-- <div class="soft-panel detail-note">
+        <strong>Backend conectado:</strong> GET /arqueo/daily?start=YYYY-MM-DD&end=YYYY-MM-DD
+      </div> -->
+    </mat-card>
+  </div>
+</div>

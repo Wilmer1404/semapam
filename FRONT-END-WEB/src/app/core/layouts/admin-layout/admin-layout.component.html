@@ -1,0 +1,34 @@
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav #sidenav mode="side" opened class="app-sidenav" (openedChange)="sidenavOpened = $event">
+    <div class="nav-brand">
+      <img [src]="branding.logoUrl" alt="SEMAPAM" />
+    </div>
+
+    <mat-nav-list>
+      <a
+        mat-list-item
+        *ngFor="let item of items"
+        [routerLink]="item.route"
+        routerLinkActive="active-link"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="nav-footer">
+      <button mat-stroked-button color="primary" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-topbar [hideBrand]="sidenavOpened" (menuToggle)="toggleSidenav()"></app-topbar>
+    <app-breadcrumbs></app-breadcrumbs>
+    <main class="page-shell">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,56 @@
+<ion-content>
+  <div class="page-shell">
+    <div class="top-hero">
+      <p class="eyebrow">Historial</p>
+      <h1 class="page-title">Tickets emitidos</h1>
+      <p class="page-subtitle">Consulta registros, revisa estados y ejecuta reimpresiones.</p>
+      <p class="ticket-meta" style="margin-top:10px">Fecha: {{ selectedDate }}</p>
+    </div>
+    <div *ngFor="let ticket of tickets" class="ticket-card">
+      <div class="ticket-top">
+        <div>
+          <div class="ticket-id">{{ ticket.id }}</div>
+          <div class="ticket-meta">{{ ticket.date }} · {{ ticket.zone }}</div>
+        </div>
+        <span
+          class="ticket-status"
+          [class.synced]="isSynced(ticket)"
+          [class.pending]="!isSynced(ticket)"
+          [attr.title]="isSynced(ticket) ? 'Sincronizado' : 'Por sincronizar'"
+        >
+          <ion-icon [name]="isSynced(ticket) ? 'checkmark-circle-outline' : 'hourglass-outline'"></ion-icon>
+        </span>
+      </div>
+      <div class="row-between" style="margin-top:14px">
+        <div>
+          <div class="ticket-meta">Recibido por</div>
+          <strong>{{ ticket.customer }}</strong>
+        </div>
+        <div style="text-align:right">
+          <div class="ticket-meta">Importe</div>
+          <strong>S/ {{ ticket.amount }}</strong>
+        </div>
+      </div>
+      <ion-button expand="block" class="w-button secondary" style="margin-top:14px" (click)="reprint(ticket)">
+        Reimprimir ticket
+      </ion-button>
+    </div>
+    <p *ngIf="!loading && !tickets.length" class="ticket-meta">No hay tickets disponibles.</p>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="tickets-fab">
+    <ion-fab-button class="secondary-fab" (click)="openFilterModal()" [disabled]="loading">
+      <ion-icon name="calendar-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <app-date-filter-modal
+    [isOpen]="showFilterModal"
+    [title]="'Filtrar tickets por fecha'"
+    [isOnline]="isOnline"
+    [selectedDate]="selectedDate"
+    (dismiss)="closeFilterModal()"
+    (apply)="applyDateFilter($event)"
+    (resetToday)="resetTodayFilter()"
+  ></app-date-filter-modal>
+</ion-content>

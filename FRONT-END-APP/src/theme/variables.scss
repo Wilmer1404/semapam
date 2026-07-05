@@ -1,0 +1,21 @@
+:root {
+  --ion-color-primary: #2563eb;
+  --ion-color-primary-rgb: 37,99,235;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #2158cf;
+  --ion-color-primary-tint: #3c73ed;
+
+  --ion-color-success: #0f766e;
+  --ion-color-danger: #dc2626;
+  --ion-color-warning: #f59e0b;
+  --ion-color-medium: #64748b;
+  --ion-background-color: #f3f7fb;
+  --ion-text-color: #0f172a;
+
+  --ion-font-family: Inter, Roboto, 'Helvetica Neue', sans-serif;
+
+  ion-toolbar {
+    --background: transparent;
+    --border-color: transparent;
+  }
+}

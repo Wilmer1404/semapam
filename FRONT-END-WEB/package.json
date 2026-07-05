@@ -1,0 +1,43 @@
+{
+  "name": "semapam-water-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "capture:views": "node scripts/capture-views.mjs",
+    "capture:manual": "node scripts/generate-manual-pdf.mjs"
+  },
+  "dependencies": {
+    "@angular/animations": "^17.3.0",
+    "@angular/cdk": "^17.3.0",
+    "@angular/common": "^17.3.0",
+    "@angular/compiler": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/forms": "^17.3.0",
+    "@angular/material": "^17.3.0",
+    "@angular/platform-browser": "^17.3.0",
+    "@angular/platform-browser-dynamic": "^17.3.0",
+    "@angular/router": "^17.3.0",
+    "@mapbox/mapbox-gl-draw": "^1.5.0",
+    "@turf/turf": "^7.1.0",
+    "chart.js": "^4.4.2",
+    "exceljs": "^4.4.0",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
+    "mapbox-gl": "^3.2.0",
+    "ng2-charts": "^6.0.1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.0",
+    "@angular/cli": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "@types/mapbox__mapbox-gl-draw": "^1.4.8",
+    "@types/node": "^20.11.30",
+    "playwright": "^1.54.2",
+    "typescript": "~5.4.2"
+  }
+}

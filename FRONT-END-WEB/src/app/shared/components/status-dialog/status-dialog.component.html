@@ -1,0 +1,17 @@
+<div class="status-dialog" [ngClass]="'variant-' + data.variant">
+  <div class="status-figure">
+    <img *ngIf="data.imageUrl; else fallbackIcon" [src]="data.imageUrl" alt="Estado" />
+    <ng-template #fallbackIcon>
+      <div class="icon-wrap">
+        <mat-icon>{{ icon }}</mat-icon>
+      </div>
+    </ng-template>
+  </div>
+
+  <h2>{{ data.title }}</h2>
+  <p>{{ data.message }}</p>
+
+  <div class="dialog-actions">
+    <button mat-flat-button color="primary" (click)="close()">{{ data.buttonText }}</button>
+  </div>
+</div>

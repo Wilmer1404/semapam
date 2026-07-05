@@ -1,0 +1,1 @@
+import { NgModule } from '@angular/core'; import { RouterModule, Routes } from '@angular/router'; import { ZonasPageComponent } from './pages/zonas-page/zonas-page.component'; const routes:Routes=[{path:'',component:ZonasPageComponent}]; @NgModule({imports:[RouterModule.forChild(routes)],exports:[RouterModule]}) export class ZonasRoutingModule {}

@@ -1,0 +1,48 @@
+<div class="page-stack">
+  <app-base-page-header
+    title="Configuración"
+    subtitle="Parámetros del sistema, branding, token de mapa, versión y sesión actual."
+  ></app-base-page-header>
+
+  <section class="grid-3">
+    <mat-card class="content-card panel-card">
+      <div class="table-toolbar compact"><div><h3>Sistema</h3><p class="muted">Datos generales del portal administrativo.</p></div></div>
+      <div class="soft-list list-content">
+        <div class="soft-panel"><div class="kpi-row"><span>Nombre</span><strong>{{ env.appName }}</strong></div></div>
+        <div class="soft-panel"><div class="kpi-row"><span>Versión</span><strong>{{ env.version }}</strong></div></div>
+        <div class="soft-panel"><div class="kpi-row"><span>API Base URL</span><strong>{{ env.apiBaseUrl }}</strong></div></div>
+        <div class="soft-panel"><div class="kpi-row"><span>Entorno</span><strong>{{ env.production ? 'Producción' : 'Desarrollo' }}</strong></div></div>
+      </div>
+    </mat-card>
+
+    <mat-card class="content-card panel-card">
+      <div class="table-toolbar compact"><div><h3>Branding</h3><p class="muted">Recursos visuales para portal y reportes.</p></div></div>
+      <div class="branding-preview">
+        <img [src]="env.branding.logoUrl" alt="Logo institucional" />
+        <img [src]="env.branding.monochromeLogoUrl" alt="Logo monocromático" />
+      </div>
+    </mat-card>
+
+    <mat-card class="content-card panel-card">
+      <div class="table-toolbar compact"><div><h3>Sesión actual</h3><p class="muted">Contexto del usuario autenticado.</p></div></div>
+      <div class="soft-list list-content" *ngIf="session.snapshot as user">
+        <div class="soft-panel"><div class="kpi-row"><span>Usuario</span><strong>{{ user.username }}</strong></div></div>
+        <div class="soft-panel"><div class="kpi-row"><span>Nombre</span><strong>{{ user.full_name }}</strong></div></div>
+        <div class="soft-panel"><div class="kpi-row"><span>Rol</span><strong>{{ user.role }}</strong></div></div>
+      </div>
+      <div class="panel-actions"><button mat-flat-button color="warn"><mat-icon>logout</mat-icon> Logout</button></div>
+    </mat-card>
+  </section>
+
+  <mat-card class="content-card panel-card">
+    <div class="table-toolbar">
+      <div><h3>Configuración técnica</h3><p class="muted">Mapbox token, branding y parámetros listos para edición futura.</p></div>
+    </div>
+    <div class="form-grid form-content">
+      <mat-form-field appearance="outline"><mat-label>Mapbox token</mat-label><input matInput [value]="env.mapboxToken" /></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Organización</mat-label><input matInput [value]="env.branding.organizationName" /></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Logo URL</mat-label><input matInput [value]="env.branding.logoUrl" /></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Logo monocromático</mat-label><input matInput [value]="env.branding.monochromeLogoUrl" /></mat-form-field>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,12 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.primary { background: #dbeafe; color: #1d4ed8; }
+.success { background: #ccfbf1; color: #0f766e; }
+.warning { background: #fef3c7; color: #b45309; }
+.danger { background: #fee2e2; color: #b91c1c; }

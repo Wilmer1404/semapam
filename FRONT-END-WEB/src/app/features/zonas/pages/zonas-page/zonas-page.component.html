@@ -1,0 +1,120 @@
+<div class="page-stack">
+  <app-base-page-header
+    title="Zonas geográficas"
+    subtitle="Gestión de polígonos, atributos territoriales, publicación y activación de cobertura."
+  >
+    <button mat-flat-button color="primary" (click)="toggleCreateZoneForm()"><mat-icon>draw</mat-icon> Crear zona</button>
+  </app-base-page-header>
+
+  <section class="grid-3 zones-layout">
+    <mat-card class="content-card panel-card map-panel" [ngClass]="formVisible ? 'grid-span-2' : 'grid-span-3'">
+      <div class="table-toolbar">
+        <div>
+          <h3>Editor geográfico</h3>
+        </div>
+      </div>
+      <div class="map-toolbar">
+        <div class="header-actions">
+          <button *ngIf="formVisible && !editingId" mat-stroked-button class="btn-secondary" (click)="startDraw()"><mat-icon>polyline</mat-icon> Dibujar</button>
+          <button *ngIf="formVisible && editingId" mat-stroked-button class="btn-secondary" (click)="startEdit()"><mat-icon>edit</mat-icon> Editar</button>
+        </div>
+      </div>
+      <div *ngIf="mapConfig.tokenReady; else mapPlaceholder" #mapContainer class="map-box"></div>
+      <ng-template #mapPlaceholder>
+        <div class="empty-map map-box">
+          <div>
+            <mat-icon>map</mat-icon>
+            <p>Configura el token de Mapbox en el entorno para habilitar el editor geográfico.</p>
+          </div>
+        </div>
+      </ng-template>
+    </mat-card>
+
+    <mat-card *ngIf="formVisible" class="content-card panel-card">
+      <div class="table-toolbar compact">
+        <div>
+          <h3>Ficha de zona</h3>
+          <p class="muted">Completa datos y edita vértices directamente en el mapa.</p>
+        </div>
+      </div>
+      <div class="form-grid form-content one-column">
+        <mat-form-field appearance="outline"><mat-label>Código</mat-label><input matInput [(ngModel)]="selectedZone.code" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Nombre</mat-label><input matInput [(ngModel)]="selectedZone.name" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Distrito</mat-label><input matInput [(ngModel)]="selectedZone.district" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Provincia</mat-label><input matInput [(ngModel)]="selectedZone.province" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Departamento</mat-label><input matInput [(ngModel)]="selectedZone.department" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Publicado</mat-label><mat-select [(ngModel)]="selectedZone.is_published"><mat-option [value]="true">Sí</mat-option><mat-option [value]="false">No</mat-option></mat-select></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Activo</mat-label><mat-select [(ngModel)]="selectedZone.is_active"><mat-option [value]="true">Sí</mat-option><mat-option [value]="false">No</mat-option></mat-select></mat-form-field>
+      </div>
+      <div class="panel-actions">
+        <button mat-flat-button color="primary" (click)="saveZone()">{{ editingId ? 'Actualizar zona' : 'Guardar zona' }}</button>
+        <button mat-stroked-button class="btn-secondary" (click)="cancelZoneForm()">Cancelar</button>
+        <button mat-stroked-button class="btn-secondary" (click)="showGeoJson()">Vista GeoJSON</button>
+      </div>
+    </mat-card>
+  </section>
+
+  <mat-card class="content-card panel-card">
+    <div class="table-toolbar">
+      <div>
+        <h3>Listado de zonas</h3>
+      </div>
+    </div>
+    <div class="filter-grid filters-block">
+      <mat-form-field appearance="outline">
+        <mat-label>Búsqueda</mat-label>
+        <input matInput placeholder="Código, zona, distrito o provincia" [(ngModel)]="filters.search" (ngModelChange)="onFilterChange()" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Departamento</mat-label>
+        <mat-select [(ngModel)]="filters.department" (selectionChange)="onFilterChange()">
+          <mat-option *ngFor="let department of departmentOptions" [value]="department">{{ department === 'ALL' ? 'Todos' : department }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Publicado</mat-label>
+        <mat-select [(ngModel)]="filters.published" (selectionChange)="onFilterChange()">
+          <mat-option value="ALL">Todos</mat-option>
+          <mat-option value="PUBLISHED">Publicado</mat-option>
+          <mat-option value="DRAFT">No publicado</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select [(ngModel)]="filters.status" (selectionChange)="onFilterChange()">
+          <mat-option value="ALL">Todos</mat-option>
+          <mat-option value="ACTIVE">Activo</mat-option>
+          <mat-option value="INACTIVE">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="header-actions align-end action-strip">
+        <button mat-flat-button color="primary" class="filter-btn" (click)="reloadCatalog()"><mat-icon>refresh</mat-icon> Recargar</button>
+        <button mat-stroked-button class="filter-btn btn-secondary" (click)="clearFilters()"><mat-icon>backspace</mat-icon> Limpiar</button>
+      </div>
+    </div>
+    <div class="table-meta">{{ totalZones }} resultado(s)</div>
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="pagedZones" class="data-table">
+        <ng-container matColumnDef="code"><th mat-header-cell *matHeaderCellDef>Código</th><td mat-cell *matCellDef="let row">{{ row.code }}</td></ng-container>
+        <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef>Zona</th><td mat-cell *matCellDef="let row">{{ row.name }}</td></ng-container>
+        <ng-container matColumnDef="district"><th mat-header-cell *matHeaderCellDef>Distrito</th><td mat-cell *matCellDef="let row">{{ row.district }}</td></ng-container>
+        <ng-container matColumnDef="province"><th mat-header-cell *matHeaderCellDef>Provincia</th><td mat-cell *matCellDef="let row">{{ row.province }}</td></ng-container>
+        <ng-container matColumnDef="department"><th mat-header-cell *matHeaderCellDef>Departamento</th><td mat-cell *matCellDef="let row">{{ row.department }}</td></ng-container>
+        <ng-container matColumnDef="is_published"><th mat-header-cell *matHeaderCellDef>Publicado</th><td mat-cell *matCellDef="let row"><span class="status-chip" [ngClass]="row.is_published ? 'status-info' : 'status-warning'">{{ row.is_published ? 'Publicado' : 'Borrador' }}</span></td></ng-container>
+        <ng-container matColumnDef="is_active"><th mat-header-cell *matHeaderCellDef>Estado</th><td mat-cell *matCellDef="let row"><span class="status-chip" [ngClass]="row.is_active ? 'status-success' : 'status-error'">{{ row.is_active ? 'Activo' : 'Inactivo' }}</span></td></ng-container>
+        <ng-container matColumnDef="actions"><th mat-header-cell *matHeaderCellDef>Acciones</th><td mat-cell *matCellDef="let row"><button mat-icon-button color="primary" (click)="editZone(row)"><mat-icon>edit</mat-icon></button><button mat-icon-button color="warn" (click)="deleteZone(row)"><mat-icon>delete</mat-icon></button></td></ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      class="paginator-strip"
+      [length]="totalZones"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </mat-card>
+</div>

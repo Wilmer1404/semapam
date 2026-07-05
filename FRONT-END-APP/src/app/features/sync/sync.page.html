@@ -1,0 +1,47 @@
+<ion-content>
+  <div class="page-shell">
+    <div class="top-hero">
+      <p class="eyebrow">Sincronización</p>
+      <h1 class="page-title">Estado del dispositivo</h1>
+      <p class="page-subtitle">Administra catálogos, registros pendientes y conectividad antes de salir a ruta.</p>
+    </div>
+
+    <div class="glass-card section-card">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Conexión</div>
+          <div class="kpi-value">
+            <app-status-chip [label]="isOnline ? 'En línea' : 'Sin internet'" [tone]="isOnline ? 'success' : 'warning'"></app-status-chip>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Pendientes</div>
+          <div class="kpi-value">{{ pendingCount }}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Última sync</div>
+          <div class="kpi-value" style="font-size:1rem">{{ lastSyncAt ? (lastSyncAt | date:'short') : 'Sin datos' }}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Zonas locales</div>
+          <div class="kpi-value">{{ zonesCount }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card section-card">
+      <h2 class="section-title">Acciones rápidas</h2>
+      <div class="action-stack">
+        <ion-button expand="block" class="w-button dark" [disabled]="isBusy" (click)="syncNow()">
+          Sincronizar ahora
+        </ion-button>
+        <ion-button expand="block" class="w-button secondary" [disabled]="isBusy" (click)="downloadCatalogs()">
+          Descargar catálogos
+        </ion-button>
+      </div>
+      <p class="ticket-meta" style="margin-top:12px">Productos locales: {{ productsCount }}</p>
+      <p class="ticket-meta">Zonas locales: {{ zonesCount }}</p>
+      <p class="ticket-meta">Tickets locales: {{ ticketsCount }}</p>
+    </div>
+  </div>
+</ion-content>

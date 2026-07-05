@@ -1,0 +1,57 @@
+<ion-content [fullscreen]="true">
+  <div class="auth-screen">
+    <div class="auth-diagonal"></div>
+
+    <div class="page-shell auth-shell">
+      <div class="auth-brand-panel glass-card">
+        <div class="brand-pill">Plataforma operativa</div>
+        <h1 class="brand-title">SEMAPAM</h1>
+        <p class="brand-subtitle">Control administrativo del abastecimiento de agua con operación offline-first, trazabilidad y sincronización centralizada.</p>
+
+        <div class="brand-highlights">
+          <div class="brand-highlight">
+            <strong>Operación en campo</strong>
+            <span>Registro, impresión y sincronización diferida desde el POS.</span>
+          </div>
+          <div class="brand-highlight">
+            <strong>Monitoreo centralizado</strong>
+            <span>Tickets, arqueo y estado de catálogos desde una sola interfaz.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-card glass-card auth-login-card">
+        <div class="auth-header">
+          <img class="auth-logo" src="assets/logo-semapam.png" alt="SEMAPAM">
+          <div>
+            <p class="eyebrow">SEMAPAM</p>
+            <h2 class="login-title">Iniciar sesión</h2>
+            <p class="login-subtitle">Accede al aplicativo para registrar operaciones y control diario.</p>
+          </div>
+        </div>
+
+        <div class="form-grid auth-form">
+          <div class="login-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <div class="field-shell">
+            <ion-item lines="none">
+              <ion-label position="stacked">Usuario</ion-label>
+              <ion-input [(ngModel)]="username" placeholder="Ingrese usuario"></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="field-shell">
+            <ion-item lines="none">
+              <ion-label position="stacked">Contraseña</ion-label>
+              <ion-input [(ngModel)]="password" type="password" placeholder="Ingrese contraseña"></ion-input>
+            </ion-item>
+          </div>
+
+          <ion-button expand="block" class="w-button dark" [disabled]="isBusy" (click)="submit()">Ingresar</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

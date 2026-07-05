@@ -1,0 +1,1 @@
+import { Pipe, PipeTransform } from '@angular/core'; @Pipe({name:'numberCurrency'}) export class NumberCurrencyPipe implements PipeTransform { transform(value:number|null|undefined,currency='S/'):string{ return `${currency} ${(value??0).toFixed(2)}`; } }

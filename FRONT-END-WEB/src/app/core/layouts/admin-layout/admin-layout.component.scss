@@ -1,0 +1,27 @@
+.layout-container{height:100vh;background:transparent}
+.app-sidenav{
+  width:300px;
+  border-right:1px solid rgba(8,35,59,.35);
+  padding:18px 14px;
+  background:linear-gradient(180deg,#0f4c81 0%,#0c3e6a 100%);
+}
+.nav-brand{display:grid;gap:14px;padding:10px 12px 18px}
+.nav-brand img{width:100%;max-width:205px}
+.brand-copy strong{display:block;font-size:1rem}
+.brand-copy span{font-size:13px;color:rgba(255,255,255,.75)}
+.active-link{
+  background:linear-gradient(90deg,rgba(255,255,255,.24),rgba(255,255,255,.08));
+  border-radius:16px;color:#ffffff !important;font-weight:700;
+}
+.app-sidenav .mat-mdc-list-item,
+.app-sidenav .mat-mdc-list-item .mdc-list-item__primary-text,
+.app-sidenav .mat-icon{color:rgba(255,255,255,.9)}
+.app-sidenav .mat-mdc-list-item:hover{background:rgba(255,255,255,.08);border-radius:14px}
+.nav-status{margin:20px 10px 90px}
+.nav-status .status-label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,.74)}
+.nav-status .status-value{font-size:1rem;font-weight:800;margin:6px 0}
+.nav-status p{margin:0;color:rgba(255,255,255,.74);font-size:13px;line-height:1.45}
+.nav-footer{position:absolute;left:16px;right:16px;bottom:18px}
+.nav-footer button{width:100%;height:44px;border-radius:14px;border-color:rgba(255,255,255,.45);color:#fff;background:rgba(255,255,255,.06)}
+.nav-footer button mat-icon{color:#fff}
+@media (max-width:1024px){.app-sidenav{width:280px}}

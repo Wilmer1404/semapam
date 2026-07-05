@@ -1,0 +1,25 @@
+<ion-tabs>
+  <ion-router-outlet></ion-router-outlet>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="sync" [routerLink]="['/tabs/sync']">
+      <ion-icon name="sync-outline"></ion-icon>
+      <ion-label>Sync</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="abastecimiento" [routerLink]="['/tabs/abastecimiento']">
+      <ion-icon name="water-outline"></ion-icon>
+      <ion-label>Abastecer</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="tickets" [routerLink]="['/tabs/tickets']">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <ion-label>Tickets</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="arqueo" [routerLink]="['/tabs/arqueo']">
+      <ion-icon name="calculator-outline"></ion-icon>
+      <ion-label>Arqueo</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="configuracion" [routerLink]="['/tabs/configuracion']">
+      <ion-icon name="settings-outline"></ion-icon>
+      <ion-label>Config</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

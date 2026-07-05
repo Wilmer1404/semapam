@@ -1,0 +1,135 @@
+<div class="page-stack" *ngIf="summary$ | async as summary">
+  <app-base-page-header
+    title="Dashboard ejecutivo"
+    subtitle="Visión rápida del día operativo, tickets, sincronización y cobertura de zonas."
+  >
+    <button mat-stroked-button class="btn-secondary">
+      <mat-icon>download</mat-icon>
+      Exportar resumen
+    </button>
+  </app-base-page-header>
+
+  <section class="grid-4">
+    <app-quick-stat-card label="Abastecimientos del día" [value]="summary.totalAbastecimientos + ''" icon="water_drop" tone="info"></app-quick-stat-card>
+    <app-quick-stat-card label="Tickets emitidos" [value]="summary.totalTickets + ''" icon="receipt_long" tone="success"></app-quick-stat-card>
+    <app-quick-stat-card label="Reimpresiones" [value]="summary.totalReimpresiones + ''" icon="print" tone="warning"></app-quick-stat-card>
+    <app-quick-stat-card label="Monto diario" [value]="'S/ ' + summary.totalMonto.toFixed(2)" icon="payments" tone="info"></app-quick-stat-card>
+  </section>
+
+  <section class="grid-3 dashboard-panels">
+    <mat-card class="content-card hero-card">
+      <div class="hero-copy">
+        <span class="pill"><mat-icon>monitoring</mat-icon> Centro de operaciones</span>
+        <h3>Operación con {{ summary.pendientesSincronizacion }} pendientes por sincronizar</h3>
+        <p>
+          Supervisa abastecimientos capturados desde dispositivos offline-first, detecta reimpresiones y revisa
+          la integridad de la trazabilidad por zona y geolocalización.
+        </p>
+      </div>
+      <div class="hero-metrics">
+        <div>
+          <span>Tickets / abastecimiento</span>
+          <strong>{{ (summary.totalTickets / summary.totalAbastecimientos) | number:'1.2-2' }}</strong>
+        </div>
+        <div>
+          <span>Pendientes</span>
+          <strong>{{ summary.pendientesSincronizacion }}</strong>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="content-card">
+      <div class="table-toolbar">
+        <div>
+          <h3>Accesos rápidos</h3>
+          <p class="muted">Atajos a los módulos más consultados.</p>
+        </div>
+      </div>
+      <div class="quick-links">
+        <a *ngFor="let item of quickAccess" [routerLink]="item.route" class="quick-link">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <div>
+            <strong>{{ item.label }}</strong>
+            <span>{{ item.helper }}</span>
+          </div>
+        </a>
+      </div>
+    </mat-card>
+
+    <mat-card class="content-card">
+      <div class="table-toolbar">
+        <div>
+          <h3>Mapa resumido de zonas</h3>
+          <p class="muted">Vista compacta para cobertura y actividad.</p>
+        </div>
+      </div>
+      <div class="mini-map empty-map">
+        <div>
+          <mat-icon>map</mat-icon>
+          <p>Zonas publicadas, actividad y puntos de abastecimiento del día.</p>
+        </div>
+      </div>
+    </mat-card>
+  </section>
+
+  <section class="grid-2">
+    <mat-card class="content-card panel-card">
+      <div class="table-toolbar">
+        <div>
+          <h3>Rendimiento por zonas</h3>
+          <p class="muted">Lectura rápida del desempeño y cobertura operativa.</p>
+        </div>
+      </div>
+      <div class="soft-list status-list">
+        <div class="soft-panel" *ngFor="let item of zoneHealth">
+          <div class="kpi-row">
+            <strong>{{ item.zone }}</strong>
+            <span class="metric">{{ item.percent }}%</span>
+          </div>
+          <div class="progress">
+            <span [style.width.%]="item.percent"></span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="content-card panel-card">
+      <div class="table-toolbar">
+        <div>
+          <h3>Tendencia operativa</h3>
+          <p class="muted">Placeholder listo para Chart.js / ng2-charts.</p>
+        </div>
+      </div>
+      <div class="chart-placeholder">
+        <div class="chart-bars">
+          <span style="height:45%"></span>
+          <span style="height:68%"></span>
+          <span style="height:58%"></span>
+          <span style="height:83%"></span>
+          <span style="height:76%"></span>
+          <span style="height:92%"></span>
+          <span style="height:64%"></span>
+        </div>
+      </div>
+    </mat-card>
+  </section>
+
+  <mat-card class="content-card panel-card">
+    <div class="table-toolbar">
+      <div>
+        <h3>Actividad reciente</h3>
+        <p class="muted">Eventos relevantes en sincronización, tickets y operación.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let item of timeline">
+        <div class="timeline-time">{{ item.time }}</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-copy">
+          <strong>{{ item.title }}</strong>
+          <span>{{ item.detail }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

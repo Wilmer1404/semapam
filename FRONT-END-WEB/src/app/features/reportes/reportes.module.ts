@@ -1,0 +1,1 @@
+import { NgModule } from '@angular/core'; import { SharedModule } from '@shared/shared.module'; import { ReportesRoutingModule } from './reportes-routing.module'; import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component'; @NgModule({declarations:[ReportesPageComponent],imports:[SharedModule,ReportesRoutingModule]}) export class ReportesModule {}

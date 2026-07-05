@@ -1,0 +1,43 @@
+<mat-toolbar class="topbar" [class.brand-collapsed]="hideBrand">
+  <button mat-icon-button (click)="menuToggle.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <div class="brand" *ngIf="!hideBrand">
+    <img [src]="branding.markUrl" alt="SEMAPAM" />
+    <div>
+      <strong>{{ branding.organizationName }}</strong>
+      <span>Centro de control administrativo</span>
+    </div>
+  </div>
+
+
+  <span class="spacer"></span>
+
+  <div
+    *ngIf="session.snapshot as user"
+    class="user-box user-box-desktop"
+    [attr.aria-label]="user.full_name + ' ' + user.role"
+  >
+    <mat-icon>account_circle</mat-icon>
+    <div>
+      <strong>{{ user.full_name }}</strong>
+      <span>{{ user.role }}</span>
+    </div>
+  </div>
+
+  <button
+    *ngIf="session.snapshot as user"
+    mat-icon-button
+    class="user-box user-box-mobile"
+    #userTooltip="matTooltip"
+    [matTooltip]="user.full_name + ' · ' + user.role"
+    matTooltipPosition="below"
+    [matTooltipTouchGestures]="'on'"
+    matTooltipHideDelay="1500"
+    (click)="userTooltip.toggle()"
+    [attr.aria-label]="user.full_name + ' ' + user.role"
+  >
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>

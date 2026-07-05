@@ -1,0 +1,53 @@
+{
+  "name": "water-app-full",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "ionic:serve": "ng serve",
+    "android-dev": "ng build -c=development && npx cap sync android",
+    "android-cert": "ng build -c=certificacion && npx cap sync android",
+    "android-prod": "ng build -c=production && npx cap sync android",
+    "ionic:apk-unsigned-dev": "npm run android-dev && cd android && gradlew assembleDebug && start app\\build\\outputs\\apk\\debug",
+    "ionic:apk-unsigned-cert": "npm run android-cert && cd android && gradlew assembleDebug && start app\\build\\outputs\\apk\\debug",
+    "ionic:apk-unsigned-prod": "npm run android-prod && cd android && gradlew assembleDebug && start app\\build\\outputs\\apk\\debug"
+  },
+  "dependencies": {
+    "@angular/animations": "^17.3.0",
+    "@angular/common": "^17.3.0",
+    "@angular/compiler": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/forms": "^17.3.0",
+    "@angular/platform-browser": "^17.3.0",
+    "@angular/platform-browser-dynamic": "^17.3.0",
+    "@angular/router": "^17.3.0",
+    "@awesome-cordova-plugins/bluetooth-serial": "^9.1.2",
+    "@awesome-cordova-plugins/core": "^9.1.2",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/geolocation": "^7.0.0",
+    "@capacitor/network": "^7.0.4",
+    "@capacitor/preferences": "^7.0.4",
+    "@ionic/angular": "^8.0.0",
+    "@turf/boolean-point-in-polygon": "^7.3.4",
+    "@turf/helpers": "^7.3.4",
+    "cordova-plugin-bluetooth-serial": "^0.4.7",
+    "ionicons": "^7.4.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.0",
+    "@angular/cli": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "@capacitor/cli": "^7.0.0",
+    "@ionic/angular-toolkit": "^11.0.0",
+    "typescript": "~5.4.0"
+  }
+}

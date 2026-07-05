@@ -1,0 +1,48 @@
+:host { display:block; }
+
+.metric-banner {
+	position: relative;
+	overflow: hidden;
+	padding: 20px;
+	border-radius: 26px;
+	background: linear-gradient(135deg, #0f4c81 0%, #0f4c81 52%, #8eb8d6 52.2%, #8eb8d6 100%);
+	color: #ffffff;
+	box-shadow: 0 14px 30px rgba(15, 76, 129, 0.22);
+}
+
+.metric-banner::after {
+	content: '';
+	position: absolute;
+	width: 180px;
+	height: 180px;
+	right: -70px;
+	bottom: -90px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.14);
+	pointer-events: none;
+}
+
+.metric-label {
+	color: rgba(219, 234, 254, 0.95);
+	margin-bottom: 6px;
+}
+
+.metric-value-input {
+	--padding-start: 0;
+	--padding-end: 0;
+	--padding-top: 0;
+	--padding-bottom: 0;
+	--placeholder-color: rgba(255, 255, 255, 0.74);
+	--placeholder-opacity: 1;
+	font-size: 3rem;
+	font-weight: 800;
+	line-height: 1;
+	color: #ffffff;
+	max-width: 180px;
+}
+
+.metric-hint {
+	margin: 8px 0 0;
+	font-size: 0.82rem;
+	color: rgba(239, 246, 255, 0.9);
+}

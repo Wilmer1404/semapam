@@ -1,0 +1,95 @@
+<ion-content>
+  <div class="page-shell">
+    <div class="top-hero"><p class="eyebrow">Sistema</p><h1 class="page-title">Configuracion</h1><p class="page-subtitle">Configura impresora Bluetooth clasica, codigo de empresa y validacion de estado en tiempo real.</p></div>
+    <div class="glass-card section-card">
+      <div class="row-between">
+        <div>
+          <div class="ticket-meta">Estado impresora</div>
+          <strong>{{ statusLabels[printerStatus] }}</strong>
+        </div>
+        <app-status-chip [label]="statusLabels[printerStatus]" [tone]="statusTone()"></app-status-chip>
+      </div>
+      <p class="ticket-meta" style="margin-top:12px">{{ printerStatusMessage }}</p>
+
+      <div class="form-grid" style="margin-top:12px">
+        <div class="field-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">Bluetooth MAC del POS</ion-label>
+            <ion-input [value]="config.posBluetoothMac || 'No detectado'" readonly="true"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="field-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">Nombre impresora</ion-label>
+            <ion-input [(ngModel)]="config.printerName" placeholder="Se autocompleta al seleccionar"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="field-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">MAC impresora</ion-label>
+            <ion-input [(ngModel)]="config.printerMac" placeholder="Se autocompleta al seleccionar"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="field-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">Codigo de empresa</ion-label>
+            <ion-input [(ngModel)]="config.companyCode" placeholder="Ej. EMP-ICA"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="field-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">Ancho de papel</ion-label>
+            <ion-select [(ngModel)]="config.paperWidth">
+              <ion-select-option *ngFor="let width of paperWidths" [value]="width">{{ width }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+      </div>
+
+      <div class="action-stack" style="margin-top:16px">
+        <ion-button expand="block" class="w-button secondary" (click)="openPrinterSelector()" [disabled]="isLoading">Seleccionar impresora</ion-button>
+        <ion-button expand="block" class="w-button secondary" (click)="runPrinterDiagnosticOnly()" [disabled]="isTesting || isLoading">Diagnosticar impresora</ion-button>
+        <!-- <ion-button expand="block" class="w-button secondary" (click)="debugPrint()" [disabled]="isTesting || isLoading">Debug de escritura</ion-button>
+        <ion-button expand="block" class="w-button secondary" (click)="inspectNativePrinter()" [disabled]="isTesting || isLoading">Inspeccionar plugin POS</ion-button>
+        <ion-button expand="block" class="w-button secondary" (click)="nativePrintTest()" [disabled]="isTesting || isLoading">Prueba nativa ZCS</ion-button> -->
+        <ion-button expand="block" class="w-button secondary" (click)="testPrint()" [disabled]="isTesting || isLoading">Prueba de impresion</ion-button>
+        <ion-button expand="block" class="w-button success" (click)="saveChanges()" [disabled]="isSaving || isLoading">Guardar cambios</ion-button>
+        <ion-button expand="block" class="w-button dark" (click)="logout()">Cerrar sesión</ion-button>
+      </div>
+    </div>
+  </div>
+
+  <ion-modal [isOpen]="isSelectorOpen" (didDismiss)="closePrinterSelector()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Impresoras emparejadas</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closePrinterSelector()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="glass-card section-card" *ngIf="!pairedDevices.length">
+          <p class="ticket-meta">No hay dispositivos Bluetooth emparejados.</p>
+          <p class="ticket-meta">Empareje una impresora en ajustes del equipo y vuelva a intentar.</p>
+        </div>
+
+        <div class="action-stack" *ngIf="pairedDevices.length">
+          <ion-button
+            expand="block"
+            class="w-button secondary"
+            *ngFor="let device of pairedDevices"
+            (click)="selectPrinter(device)">
+            {{ device.name }}
+            <span style="display:block; font-size:12px; opacity:0.8">{{ device.mac }}</span>
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

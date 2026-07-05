@@ -1,0 +1,40 @@
+.panel-card{padding-bottom:20px}
+.grid-span-2{grid-column:span 2}
+.filters-block{padding:14px 20px 6px;margin:0 20px 14px;border:1px solid #e2eaf3;border-radius:14px;background:#f8fbff;grid-template-columns:repeat(4,minmax(160px,1fr))}
+.compact{padding-bottom:6px}
+.filter-btn{height:40px;border-radius:10px;font-weight:600;min-width:118px;box-shadow:none}
+.filter-btn mat-icon{font-size:18px;width:18px;height:18px;margin-right:6px}
+.filter-btn--ghost{background:#fff;border-color:#c8d7e8;color:#1f3a5a}
+.table-meta{padding:0 20px 10px;color:#5c6f84;font-weight:600;font-size:12px;letter-spacing:.02em;text-transform:uppercase}
+.table-wrapper{margin:0 20px;border:1px solid #e2eaf3;border-radius:14px;overflow:auto;background:#fff;position:relative}
+.data-table{width:100%;min-width:880px}
+.data-table th.mat-mdc-header-cell{font-size:12px;font-weight:700;color:#31465d;text-transform:uppercase;letter-spacing:.04em;background:#f3f8fe}
+.data-table tr.mat-mdc-row{cursor:pointer}
+.data-table tr.mat-mdc-row:hover{background:#f7fbff}
+.row-selected{background:#eef5fd !important}
+.table-loading,.table-empty{padding:18px 20px;color:#5f7388;font-weight:600}
+.paginator-strip{margin:10px 20px 0;border:1px solid #e2eaf3;border-radius:12px;background:#fff}
+.detail-card{padding-bottom:20px}
+.detail-loading{padding:0 20px 12px}
+.ticket-preview{margin:0 20px}
+.receipt-thermal{width:54mm;max-width:100%;margin:0 auto;padding:12px;border-radius:16px;border:1px dashed var(--brand-border);background:#fff;font-family:'Courier New',monospace}
+.receipt-head{display:grid;justify-items:center;text-align:center;gap:6px;padding-bottom:12px;border-bottom:1px dashed var(--brand-border);margin-bottom:10px}
+.receipt-head img{max-width:34mm}
+.receipt-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #e7edf4;font-size:12px}
+.receipt-row.total{font-size:14px;font-weight:700}
+.panel-actions{display:flex;gap:12px;padding:18px 20px 0}
+.vertical{flex-direction:column}
+
+@media (max-width:1200px){
+	.grid-span-2{grid-column:span 1}
+	.filters-block{grid-template-columns:repeat(2,minmax(180px,1fr))}
+}
+
+@media (max-width:768px){
+	.filters-block{grid-template-columns:1fr;padding:12px;margin:0 12px 12px}
+	.table-meta{padding:0 12px 10px}
+	.table-wrapper{margin:0 12px}
+	.paginator-strip{margin:10px 12px 0}
+	.ticket-preview{margin:0 12px}
+	.panel-actions{padding:16px 12px 0}
+}

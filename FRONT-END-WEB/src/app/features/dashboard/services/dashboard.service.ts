@@ -1,0 +1,1 @@
+import { Injectable } from '@angular/core'; import { of } from 'rxjs'; import { DashboardSummary } from '@shared/models/dashboard.model'; @Injectable() export class DashboardService{ getSummary(){ return of<DashboardSummary>({totalAbastecimientos:128,totalTickets:121,totalReimpresiones:9,totalMonto:4570.5,pendientesSincronizacion:4}); } }

@@ -1,0 +1,30 @@
+.date-modal-shell {
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.date-modal-title {
+  margin: 2px 2px 8px;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.date-modal-hint {
+  margin: 0 2px 12px;
+}
+
+.date-input-shell {
+  margin-bottom: 12px;
+}
+
+.date-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+:global(.date-filter-modal) {
+  --border-radius: 22px 22px 0 0;
+}

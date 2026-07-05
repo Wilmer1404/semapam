@@ -1,0 +1,30 @@
+<ion-modal
+  cssClass="date-filter-modal"
+  [isOpen]="isOpen"
+  [initialBreakpoint]="0.34"
+  [breakpoints]="[0, 0.34, 0.5]"
+  (didDismiss)="onDismiss()"
+>
+  <ng-template>
+    <ion-content class="ion-padding">
+      <div class="date-modal-shell">
+        <h3 class="date-modal-title">{{ title }}</h3>
+        <p class="ticket-meta date-modal-hint">
+          {{ isOnline ? 'Puedes consultar cualquier fecha con internet.' : 'Sin internet solo está disponible la fecha de hoy.' }}
+        </p>
+
+        <div class="field-shell date-input-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">Fecha</ion-label>
+            <ion-input type="date" [ngModel]="tempDate" (ngModelChange)="onDateChange($event)"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="date-modal-actions">
+          <ion-button class="w-button secondary" (click)="onResetToday()">Hoy</ion-button>
+          <ion-button class="w-button dark" (click)="onApply()">Aplicar</ion-button>
+        </div>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

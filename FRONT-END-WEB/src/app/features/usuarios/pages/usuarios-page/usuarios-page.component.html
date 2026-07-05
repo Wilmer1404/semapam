@@ -1,0 +1,117 @@
+<div class="page-stack">
+  <app-base-page-header
+    title="Usuarios"
+    subtitle="Administración de credenciales, roles, operadores y estado de acceso al sistema."
+  >
+    <button mat-flat-button color="primary" (click)="toggleCreateUserForm()">
+      <mat-icon>person_add</mat-icon>
+      Nuevo usuario
+    </button>
+  </app-base-page-header>
+
+  <section class="grid-3">
+    <mat-card *ngIf="formVisible" class="content-card panel-card form-panel">
+      <div class="table-toolbar compact">
+        <div>
+          <h3>Formulario Usuario</h3>
+          <p class="muted">Se usa para agregar o editar usuarios.</p>
+        </div>
+      </div>
+      <div class="form-grid form-content">
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="draftUser.username" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput [(ngModel)]="draftUser.full_name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select [(ngModel)]="draftUser.role">
+            <mat-option *ngFor="let role of roleOptions" [value]="role">{{ role }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>DNI</mat-label>
+          <input matInput [(ngModel)]="draftUser.dni" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput [(ngModel)]="draftUser.phone" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña {{ editingId ? '(opcional)' : '' }}</mat-label>
+          <input matInput type="password" [(ngModel)]="draftPassword" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Estado</mat-label>
+          <mat-select [(ngModel)]="draftUser.status">
+            <mat-option [value]="true">Activo</mat-option>
+            <mat-option [value]="false">Inactivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="panel-actions">
+        <button mat-flat-button color="primary" (click)="saveUser()">{{ editingId ? 'Actualizar' : 'Guardar' }}</button>
+        <button mat-stroked-button class="btn-secondary" (click)="cancel()">Cancelar</button>
+      </div>
+    </mat-card>
+
+    <mat-card class="content-card panel-card" [ngClass]="formVisible ? 'grid-span-2' : 'grid-span-3'">
+      <div class="table-toolbar">
+        <div>
+          <h3>Listado de usuarios</h3>
+        </div>
+      </div>
+      <div class="filter-grid filters-block">
+        <mat-form-field appearance="outline">
+          <mat-label>Búsqueda</mat-label>
+          <input matInput placeholder="Nombre, usuario, DNI o teléfono" [(ngModel)]="filters.search" (ngModelChange)="onFilterChange()" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select [(ngModel)]="filters.role" (selectionChange)="onFilterChange()">
+            <mat-option value="ALL">Todos</mat-option>
+            <mat-option *ngFor="let role of roleOptions" [value]="role">{{ role }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Estado</mat-label>
+          <mat-select [(ngModel)]="filters.status" (selectionChange)="onFilterChange()">
+            <mat-option value="ALL">Todos</mat-option>
+            <mat-option value="ACTIVE">Activo</mat-option>
+            <mat-option value="INACTIVE">Inactivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="header-actions align-end action-strip">
+          <button mat-flat-button color="primary" class="filter-btn" (click)="reloadCatalog()"><mat-icon>refresh</mat-icon> Recargar</button>
+          <button mat-stroked-button class="filter-btn btn-secondary" (click)="clearFilters()"><mat-icon>backspace</mat-icon> Limpiar</button>
+        </div>
+      </div>
+      <div class="table-meta">{{ totalUsers }} resultado(s)</div>
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="pagedUsers" class="data-table">
+          <ng-container matColumnDef="username"><th mat-header-cell *matHeaderCellDef>Usuario</th><td mat-cell *matCellDef="let row">{{ row.username }}</td></ng-container>
+          <ng-container matColumnDef="full_name"><th mat-header-cell *matHeaderCellDef>Nombre</th><td mat-cell *matCellDef="let row">{{ row.full_name }}</td></ng-container>
+          <ng-container matColumnDef="role"><th mat-header-cell *matHeaderCellDef>Rol</th><td mat-cell *matCellDef="let row"><span class="status-chip status-info">{{ row.role }}</span></td></ng-container>
+          <ng-container matColumnDef="dni"><th mat-header-cell *matHeaderCellDef>DNI</th><td mat-cell *matCellDef="let row">{{ row.dni }}</td></ng-container>
+          <ng-container matColumnDef="phone"><th mat-header-cell *matHeaderCellDef>Teléfono</th><td mat-cell *matCellDef="let row">{{ row.phone }}</td></ng-container>
+          <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef>Estado</th><td mat-cell *matCellDef="let row"><span class="status-chip" [ngClass]="row.status ? 'status-success' : 'status-error'">{{ row.status ? 'Activo' : 'Inactivo' }}</span></td></ng-container>
+          <ng-container matColumnDef="actions"><th mat-header-cell *matHeaderCellDef>Acciones</th><td mat-cell *matCellDef="let row"><button mat-icon-button color="primary" (click)="editUser(row)"><mat-icon>edit</mat-icon></button><button mat-icon-button color="warn" (click)="deleteUser(row)"><mat-icon>delete</mat-icon></button></td></ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+      <mat-paginator
+        class="paginator-strip"
+        [length]="totalUsers"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions"
+        showFirstLastButtons
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </mat-card>
+  </section>
+</div>

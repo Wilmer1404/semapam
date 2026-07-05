@@ -1,0 +1,66 @@
+<ion-content #abastecimientoContent>
+  <div class="page-shell">
+    <div class="top-hero">
+      <p class="eyebrow">Operación</p>
+      <h1 class="page-title">Nuevo abastecimiento</h1>
+      <p class="page-subtitle">Registra la cantidad, valida la zona y genera el ticket con impresión inmediata.</p>
+    </div>
+
+    <div class="metric-banner">
+      <div class="row-between">
+        <div>
+          <div class="eyebrow metric-label">Cubos a dispensar</div>
+          <ion-input
+            class="metric-value-input"
+            [(ngModel)]="cantidad"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            placeholder="--"
+          ></ion-input>
+        </div>
+        <app-status-chip [label]="'Zona: ' + zonaDetectada" tone="primary"></app-status-chip>
+      </div>
+      <p class="metric-hint">Edita directamente el valor de cubos.</p>
+    </div>
+
+    <div class="glass-card section-card" style="margin-top:16px">
+      <div class="segmented-inline">
+        <ion-button expand="block" class="w-button success" [disabled]="!canStart" (click)="iniciar()">Iniciar</ion-button>
+        <ion-button expand="block" class="w-button danger" [disabled]="!canFinish" (click)="terminar()">Terminar</ion-button>
+      </div>
+      <p class="ticket-meta" style="margin-top:12px">Estado: {{ estadoOperacion }}</p>
+      <p class="ticket-meta">Cronómetro: {{ cronometro }}</p>
+      <p class="ticket-meta" *ngIf="isResolvingZone">Validando zona con GPS y catálogos...</p>
+    </div>
+
+    <div class="glass-card section-card">
+      <h2 class="section-title">Datos del ticket</h2>
+      <div class="form-grid">
+        <div class="field-shell">
+          <ion-item lines="none">
+            <ion-label position="stacked">Producto</ion-label>
+            <ion-select [(ngModel)]="selectedProductId" placeholder="Seleccione producto">
+              <ion-select-option *ngFor="let p of productos" [value]="p.id">{{ p.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+        <div class="field-shell"><ion-item lines="none"><ion-label position="stacked">Recibido por</ion-label><ion-input [(ngModel)]="recibidoPor"></ion-input></ion-item></div>
+        <div class="field-shell" *ngIf="mostrarZonaManual">
+          <ion-item lines="none">
+            <ion-label position="stacked">Zona manual</ion-label>
+            <ion-select [(ngModel)]="zonaManualId" placeholder="Seleccione zona" (ionChange)="onZonaManualChange()">
+              <ion-select-option *ngFor="let zona of zonasDisponibles" [value]="zona.id">{{ zona.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+        <div class="field-shell"><ion-item lines="none"><ion-label position="stacked">Importe</ion-label><ion-input [(ngModel)]="importe" type="number" placeholder="Ingrese importe"></ion-input></ion-item></div>
+      </div>
+      <div class="action-stack" style="margin-top:16px">
+        <ion-button expand="block" class="w-button dark" [disabled]="isSaving" (click)="guardarImprimir()">
+          Guardar e imprimir
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

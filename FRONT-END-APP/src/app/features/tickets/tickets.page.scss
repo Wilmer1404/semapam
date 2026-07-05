@@ -1,0 +1,42 @@
+.ticket-status {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.ticket-status ion-icon {
+  font-size: 20px;
+}
+
+.ticket-status.synced {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #047857;
+}
+
+.ticket-status.pending {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.38);
+  color: #b45309;
+}
+
+.tickets-fab {
+  margin-bottom: 74px;
+  margin-right: 8px;
+}
+
+.tickets-fab .secondary-fab {
+  --background: #e8f1fb;
+  --color: #0f4c81;
+  --box-shadow: 0 8px 18px rgba(15, 76, 129, 0.2);
+  --border-radius: 50%;
+}
+
+.tickets-fab .secondary-fab::part(native) {
+  border: 1px solid #b6cde2;
+  border-radius: 50%;
+}

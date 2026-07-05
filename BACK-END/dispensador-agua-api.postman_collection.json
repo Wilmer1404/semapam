@@ -1,0 +1,301 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Dispensador de Agua API",
+    "description": "Colección de endpoints para el backend del dispensador de agua.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:7636/backend-dispensador-agua-api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "var token = (json && json.data && json.data.token) ? json.data.token : null;",
+                  "if (token) {",
+                  "    pm.collectionVariables.set('token', token);",
+                  "    pm.environment.set('token', token);",
+                  "    pm.environment.set('token-rest-dispensador', token);",
+                  "} else {",
+                  "    console.warn('No se encontro data.token en la respuesta de login');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            },
+            "description": "Autentica un usuario y retorna un JWT. El token se guarda automáticamente en la variable `token` de la colección."
+          }
+        },
+        {
+          "name": "Me (sesión actual)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/me",
+              "host": ["{{base_url}}"],
+              "path": ["me"]
+            },
+            "description": "Retorna los datos del usuario autenticado basándose en el JWT."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catálogos",
+      "item": [
+        {
+          "name": "Listar Productos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/catalogs/products",
+              "host": ["{{base_url}}"],
+              "path": ["catalogs", "products"]
+            },
+            "description": "Retorna todos los productos activos."
+          }
+        },
+        {
+          "name": "Listar Zonas",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/catalogs/zones",
+              "host": ["{{base_url}}"],
+              "path": ["catalogs", "zones"]
+            },
+            "description": "Retorna todas las zonas publicadas."
+          }
+        },
+        {
+          "name": "Sincronizar Catálogos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/sync/catalogs",
+              "host": ["{{base_url}}"],
+              "path": ["sync", "catalogs"]
+            },
+            "description": "Retorna productos y zonas en un solo endpoint para sincronización offline."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Abastecimientos",
+      "item": [
+        {
+          "name": "Registrar Abastecimiento",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idLocal\": \"UUID-LOCAL-001\",\n  \"cantidad\": 20,\n  \"producto\": { \"id\": 1 },\n  \"recibidoPor\": \"María López\",\n  \"zonaNombreSnapshot\": \"Zona Norte\",\n  \"zonaId\": 1,\n  \"latitud\": -12.046374,\n  \"longitud\": -77.042793,\n  \"precisionGps\": 5.0,\n  \"fechaGps\": \"2026-04-05 08:00:00\",\n  \"importe\": 100.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/abastecimientos",
+              "host": ["{{base_url}}"],
+              "path": ["abastecimientos"]
+            },
+            "description": "Registra un nuevo abastecimiento. Campos requeridos: idLocal, cantidad, producto, conductor, recibidoPor, zonaNombreSnapshot, latitud, longitud, precisionGps, fechaGps, horaInicio, horaFin, importe."
+          }
+        },
+        {
+          "name": "Sincronizar Abastecimientos (batch)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"idLocal\": \"UUID-LOCAL-002\",\n      \"cantidad\": 10,\n      \"producto\": { \"id\": 1 },\n      \"recibidoPor\": \"María López\",\n      \"zonaNombreSnapshot\": \"Zona Norte\",\n      \"zonaId\": 1,\n      \"latitud\": -12.046374,\n      \"longitud\": -77.042793,\n      \"precisionGps\": 5.0,\n      \"fechaGps\": \"2026-04-05 07:00:00\",\n      \"importe\": 50.00\n    },\n    {\n      \"idLocal\": \"UUID-LOCAL-003\",\n      \"cantidad\": 15,\n      \"producto\": { \"id\": 2 },\n      \"recibidoPor\": \"Ana Torres\",\n      \"zonaNombreSnapshot\": \"Zona Sur\",\n      \"zonaId\": 2,\n      \"latitud\": -12.100000,\n      \"longitud\": -77.050000,\n      \"precisionGps\": 4.5,\n      \"fechaGps\": \"2026-04-05 09:00:00\",\n      \"importe\": 75.00\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/sync/abastecimientos",
+              "host": ["{{base_url}}"],
+              "path": ["sync", "abastecimientos"]
+            },
+            "description": "Sincroniza múltiples abastecimientos en lote (uso offline). Enviar un array en la propiedad `items`."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "item": [
+        {
+          "name": "Listar Tickets",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tickets?fecha_desde=2026-04-01&fecha_hasta=2026-04-05",
+              "host": ["{{base_url}}"],
+              "path": ["tickets"],
+              "query": [
+                {
+                  "key": "fecha_desde",
+                  "value": "2026-04-01",
+                  "description": "Filtro de fecha inicio (YYYY-MM-DD). Opcional."
+                },
+                {
+                  "key": "fecha_hasta",
+                  "value": "2026-04-05",
+                  "description": "Filtro de fecha fin (YYYY-MM-DD). Opcional."
+                }
+              ]
+            },
+            "description": "Lista tickets con filtros opcionales por rango de fechas."
+          }
+        },
+        {
+          "name": "Ver Ticket por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tickets/1",
+              "host": ["{{base_url}}"],
+              "path": ["tickets", "1"]
+            },
+            "description": "Retorna el detalle de un ticket específico por su ID."
+          }
+        },
+        {
+          "name": "Registrar Reimpresión de Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tickets/1/reprint",
+              "host": ["{{base_url}}"],
+              "path": ["tickets", "1", "reprint"]
+            },
+            "description": "Incrementa el contador de reimpresiones del ticket indicado."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Arqueo",
+      "item": [
+        {
+          "name": "Arqueo Diario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/arqueo/daily?fecha=2026-04-05",
+              "host": ["{{base_url}}"],
+              "path": ["arqueo", "daily"],
+              "query": [
+                {
+                  "key": "fecha",
+                  "value": "2026-04-05",
+                  "description": "Fecha del arqueo (YYYY-MM-DD). Por defecto hoy."
+                },
+                {
+                  "key": "user_id",
+                  "value": "",
+                  "description": "Filtrar por usuario específico. Opcional.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retorna el resumen del arqueo diario: total de registros y monto total. Se puede filtrar por fecha y por usuario."
+          }
+        }
+      ]
+    }
+  ]
+}
