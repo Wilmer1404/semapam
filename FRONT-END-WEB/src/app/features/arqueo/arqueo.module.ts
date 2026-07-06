@@ -1,1 +1,0 @@
-import { NgModule } from '@angular/core'; import { SharedModule } from '@shared/shared.module'; import { ArqueoRoutingModule } from './arqueo-routing.module'; import { ArqueoPageComponent } from './pages/arqueo-page/arqueo-page.component'; @NgModule({declarations:[ArqueoPageComponent],imports:[SharedModule,ArqueoRoutingModule]}) export class ArqueoModule {}

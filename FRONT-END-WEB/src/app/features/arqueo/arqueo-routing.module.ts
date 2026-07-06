@@ -1,1 +1,0 @@
-import { NgModule } from '@angular/core'; import { RouterModule, Routes } from '@angular/router'; import { ArqueoPageComponent } from './pages/arqueo-page/arqueo-page.component'; const routes:Routes=[{path:'',component:ArqueoPageComponent}]; @NgModule({imports:[RouterModule.forChild(routes)],exports:[RouterModule]}) export class ArqueoRoutingModule {}

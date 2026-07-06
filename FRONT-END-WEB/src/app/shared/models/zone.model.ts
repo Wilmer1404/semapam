@@ -1,1 +1,0 @@
-export interface ZoneGeoJson{ type:'Feature'; properties:Record<string,unknown>; geometry:{ type:'Polygon'|'MultiPolygon'; coordinates:number[][][]|number[][][][]; }; } export interface Zone{ id?:number; code:string; name:string; district:string; province:string; department:string; is_published:boolean; is_active:boolean; geojson?:ZoneGeoJson; }

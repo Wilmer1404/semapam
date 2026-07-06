@@ -1,1 +1,0 @@
-export type UserRole='ADMIN'|'OPERADOR'|'SUPERVISOR'; export interface User{ id?:number; username:string; full_name:string; role:UserRole; dni:string; phone:string; status:boolean; } export interface SessionUser extends User{ token?:string; }

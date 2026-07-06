@@ -1,1 +1,0 @@
-import { NgModule } from '@angular/core'; import { SharedModule } from '@shared/shared.module'; import { UsuariosRoutingModule } from './usuarios-routing.module'; import { UsuariosPageComponent } from './pages/usuarios-page/usuarios-page.component'; @NgModule({declarations:[UsuariosPageComponent],imports:[SharedModule,UsuariosRoutingModule]}) export class UsuariosModule {}

@@ -1,1 +1,0 @@
-import { NgModule } from '@angular/core'; import { SharedModule } from '@shared/shared.module'; import { ZonasRoutingModule } from './zonas-routing.module'; import { ZonasPageComponent } from './pages/zonas-page/zonas-page.component'; @NgModule({declarations:[ZonasPageComponent],imports:[SharedModule,ZonasRoutingModule]}) export class ZonasModule {}
