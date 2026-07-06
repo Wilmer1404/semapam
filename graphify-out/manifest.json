@@ -1,7 +1,7 @@
 {
   ".opencode/opencode.json": {
-    "mtime": 1783292230.2266698,
-    "ast_hash": "abcc8b9dcd80bca5f9dde6d9f0c3ae79",
+    "mtime": 1783293485.34097,
+    "ast_hash": "e5f74d14a81702b55bdf53b33ec991d7",
     "semantic_hash": ""
   },
   ".opencode/plugins/graphify.js": {
@@ -1160,8 +1160,8 @@
     "semantic_hash": ""
   },
   "FRONT-END-WEB/src/environments/environment.ts": {
-    "mtime": 1775831862.0,
-    "ast_hash": "2eb6506a7c339a023695d1ed773a0c42",
+    "mtime": 1783293072.1181898,
+    "ast_hash": "bb44d335627f8237260df274f971006a",
     "semantic_hash": ""
   },
   "FRONT-END-WEB/src/main.ts": {
@@ -8202,6 +8202,11 @@
   "FRONT-END-WEB/src/assets/logo-semapam.png": {
     "mtime": 1775485324.0,
     "ast_hash": "60babe53862a205d160beb484319747c",
+    "semantic_hash": ""
+  },
+  ".opencode/package.json": {
+    "mtime": 1783293497.4542904,
+    "ast_hash": "2bffcf9dc5701114d97f5dc5e7c50482",
     "semantic_hash": ""
   }
 }

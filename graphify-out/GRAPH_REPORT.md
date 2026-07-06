@@ -1,13 +1,18 @@
 # Graph Report - APKSEMAPAM  (2026-07-05)
 
 ## Corpus Check
-- 239 files · ~372,295 words
+- 240 files · ~372,304 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4226 nodes · 8102 edges · 232 communities (160 shown, 72 thin omitted)
+- 4229 nodes · 8104 edges · 229 communities (165 shown, 64 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 278 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `718f23f8`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
@@ -111,7 +116,6 @@
 - [[_COMMUNITY_Community 98|Community 98]]
 - [[_COMMUNITY_Community 99|Community 99]]
 - [[_COMMUNITY_Community 100|Community 100]]
-- [[_COMMUNITY_Community 101|Community 101]]
 - [[_COMMUNITY_Community 102|Community 102]]
 - [[_COMMUNITY_Community 103|Community 103]]
 - [[_COMMUNITY_Community 104|Community 104]]
@@ -204,10 +208,7 @@
 - [[_COMMUNITY_Community 199|Community 199]]
 - [[_COMMUNITY_Community 200|Community 200]]
 - [[_COMMUNITY_Community 201|Community 201]]
-- [[_COMMUNITY_Community 208|Community 208]]
-- [[_COMMUNITY_Community 209|Community 209]]
 - [[_COMMUNITY_Community 210|Community 210]]
-- [[_COMMUNITY_Community 211|Community 211]]
 - [[_COMMUNITY_Community 212|Community 212]]
 - [[_COMMUNITY_Community 213|Community 213]]
 - [[_COMMUNITY_Community 214|Community 214]]
@@ -244,31 +245,35 @@
 ## Import Cycles
 - None detected.
 
-## Communities (232 total, 72 thin omitted)
+## Communities (229 total, 64 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.02
-Nodes (59): _, _4(), $6, A4(), Ah(), Ao(), B0(), B8 (+51 more)
+Nodes (56): _, _4(), $6, A4(), Ao(), B0(), B8, Bi (+48 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.05
 Nodes (15): available(), c, d, e, getEngine(), getResizeMode(), impact(), notification() (+7 more)
 
-### Community 3 - "Community 3"
+### Community 2 - "Community 2"
 Cohesion: 0.05
-Nodes (22): BasePageHeaderComponent, TicketsService, TicketsModule, SharedModule, Ticket, TicketDetail, TicketFilters, TicketsListData (+14 more)
+Nodes (3): ca(), Ci(), X()
+
+### Community 3 - "Community 3"
+Cohesion: 0.15
+Nodes (5): TicketsModule, Ticket, TicketsPageComponent, routes, TicketsRoutingModule
 
 ### Community 4 - "Community 4"
-Cohesion: 0.05
-Nodes (32): amount, BluetoothPrinterAdapter, body, bytes, cents, clean, cleanLabel, cleanValue (+24 more)
+Cohesion: 0.07
+Nodes (26): amount, body, bytes, cents, clean, cleanLabel, cleanValue, contentWidth (+18 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.08
-Nodes (50): _2(), a8(), Al(), ar(), bm(), ca(), cm(), D4() (+42 more)
+Cohesion: 0.09
+Nodes (51): _2(), A6(), a8(), Al(), ar(), bm(), cm(), D4() (+43 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.06
-Nodes (36): A1(), _adjustIndex(), c6(), Cl(), detach(), E2(), e6(), ea() (+28 more)
+Cohesion: 0.05
+Nodes (43): A1(), _adjustIndex(), Bl(), c6(), Cl(), detach(), dg(), E2() (+35 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.07
@@ -286,6 +291,10 @@ Nodes (48): dependencies, @angular/animations, @angular/common, @angular/compile
 Cohesion: 0.08
 Nodes (7): ae(), e, fo(), ko(), qt(), Wn(), xe()
 
+### Community 11 - "Community 11"
+Cohesion: 0.05
+Nodes (3): hn(), onClick(), Q()
+
 ### Community 12 - "Community 12"
 Cohesion: 0.06
 Nodes (14): Request, Request, Closure, Request, App, AbastecimientoController, AuthController, Request (+6 more)
@@ -298,25 +307,21 @@ Nodes (34): ariaLabel(), callOptionHandler(), componentDidLoad(), componentWillL
 Cohesion: 0.07
 Nodes (32): applyFullscreenSafeArea(), breakpointsChanged(), cardOnDismiss(), checkCanDismiss(), cleanupChildRoutePassthrough(), cleanupParentRemovalObserver(), cleanupSafeAreaOverrides(), cleanupViewTransitionListener() (+24 more)
 
-### Community 15 - "Community 15"
-Cohesion: 0.06
-Nodes (8): ae, Bt, D, getPluginInstallName(), getPluginName(), getPluginRef(), installed(), Xe()
-
 ### Community 16 - "Community 16"
-Cohesion: 0.06
-Nodes (5): Ml(), rel(), Ve, Vt(), We
+Cohesion: 0.05
+Nodes (6): G2(), Ml(), rel(), Ve, Vt(), We
 
 ### Community 17 - "Community 17"
-Cohesion: 0.10
-Nodes (16): APP_CONSTANTS, ApiResponse, ArqueoApiItem, CatalogsApiData, LoginApiData, MeApiData, SyncAbastecimientoResult, User (+8 more)
+Cohesion: 0.09
+Nodes (20): APP_CONSTANTS, ApiResponse, ArqueoApiItem, ArqueoLocalCache, CatalogsApiData, LoginApiData, MeApiData, RawProduct (+12 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.07
-Nodes (32): ag(), Bl(), Bs(), cg(), d6(), dg(), E1(), ec (+24 more)
+Cohesion: 0.16
+Nodes (17): ag(), Bs(), cg(), d6(), Dl(), ed(), Ft(), H1() (+9 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.09
-Nodes (3): ie, pn(), se()
+Cohesion: 0.08
+Nodes (4): Bt, ie, pn(), se()
 
 ### Community 20 - "Community 20"
 Cohesion: 0.05
@@ -327,20 +332,20 @@ Cohesion: 0.08
 Nodes (27): checkCollapsibleHeader(), commit(), componentDidLoad(), componentDidUpdate(), connectedCallback(), destroyCollapsibleHeader(), disconnectedCallback(), emitStyle() (+19 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.12
-Nodes (16): BluetoothPairedDevice, DEFAULT_PRINTER_CONFIG, PaperWidth, PrinterConfig, PrinterStatus, PosPrinter, PosPrinterCandidate, PosPrinterLauncherApp (+8 more)
+Cohesion: 0.22
+Nodes (13): BluetoothPairedDevice, DEFAULT_PRINTER_CONFIG, PaperWidth, PrinterStatus, PosPrinter, PosPrinterCandidate, PosPrinterLauncherApp, PosPrinterNativeStatus (+5 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.07
-Nodes (14): $1(), Bb(), bo(), c1, _i(), Jg, l1(), m1() (+6 more)
+Cohesion: 0.06
+Nodes (15): $1(), Bb(), bo(), c1, cc, _i(), Jg, l1() (+7 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.08
-Nodes (18): $3(), an(), c0(), d0(), Km(), ni(), O3(), Os() (+10 more)
+Cohesion: 0.05
+Nodes (32): $3(), c0(), d0(), G4(), ID(), J6, jM(), Km() (+24 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.09
-Nodes (31): Ai(), am(), Au(), bc(), bu(), _c(), Cu(), Du() (+23 more)
+Nodes (29): Ai(), Au(), bc(), bu(), _c(), Cu(), Du(), Eu() (+21 more)
 
 ### Community 26 - "Community 26"
 Cohesion: 0.10
@@ -348,7 +353,7 @@ Nodes (25): afterAnimation(), beforeAnimation(), canStart(), canSwipe(), close()
 
 ### Community 27 - "Community 27"
 Cohesion: 0.08
-Nodes (4): Do, dt(), It(), Zt()
+Nodes (3): Do, dt(), Zt()
 
 ### Community 28 - "Community 28"
 Cohesion: 0.13
@@ -356,15 +361,19 @@ Nodes (27): activate(), checkButton(), checked(), colorChanged(), componentDidLo
 
 ### Community 29 - "Community 29"
 Cohesion: 0.10
-Nodes (8): TicketsService, TicketsModule, TicketApiItem, TicketsLocalCache, Ticket, MockDataService, routes, TicketsPage
+Nodes (7): PrinterAdapter, TicketsService, TicketApiItem, Ticket, MockDataService, ConsolePrinterAdapter, PrinterService
 
 ### Community 30 - "Community 30"
-Cohesion: 0.11
-Nodes (8): RawProduct, RawZone, SyncAbastecimientoPayload, Product, SyncService, routes, SplashModule, SplashPage
+Cohesion: 0.12
+Nodes (5): Product, SyncService, routes, SplashModule, SplashPage
 
 ### Community 31 - "Community 31"
-Cohesion: 0.09
-Nodes (13): Ac(), DD(), E9(), h8(), hd(), ic(), la(), m8() (+5 more)
+Cohesion: 0.11
+Nodes (12): Ac(), DD(), E9(), h8(), hd(), ic(), la(), m8() (+4 more)
+
+### Community 32 - "Community 32"
+Cohesion: 0.08
+Nodes (5): f6(), Gs(), h6(), he, sa()
 
 ### Community 35 - "Community 35"
 Cohesion: 0.09
@@ -375,8 +384,8 @@ Cohesion: 0.09
 Nodes (19): checkClearOnEdit(), componentDidLoad(), connectedCallback(), debounceChanged(), emitInputChange(), getHintTextID(), getLabelledById(), getValue() (+11 more)
 
 ### Community 37 - "Community 37"
-Cohesion: 0.08
-Nodes (3): clear(), Ge(), oe
+Cohesion: 0.07
+Nodes (5): clear(), f(), Ge(), Iw(), oe
 
 ### Community 38 - "Community 38"
 Cohesion: 0.11
@@ -387,12 +396,16 @@ Cohesion: 0.11
 Nodes (19): canTransition(), componentWillLoad(), getSegments(), historyDirection(), lock(), navChanged(), nt, onComponentProps() (+11 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.09
-Nodes (3): Cn(), emit(), Ne
+Cohesion: 0.11
+Nodes (6): at(), Cn(), Fo(), H(), Mn(), xt()
 
 ### Community 41 - "Community 41"
-Cohesion: 0.12
-Nodes (15): AbastecimientoModule, routes, GeoJsonPolygon, LocationPoint, LoginPayload, LoginRequest, PrintStatus, SessionData (+7 more)
+Cohesion: 0.15
+Nodes (12): GeoJsonPolygon, LocationPoint, LoginPayload, LoginRequest, PrintStatus, SyncStatus, Zone, ZoneAssignmentMethod (+4 more)
+
+### Community 42 - "Community 42"
+Cohesion: 0.09
+Nodes (13): AbastecimientosModule, AbastecimientosRoutingModule, routes, AbastecimientosPageComponent, Abastecimiento, AbastecimientosFilters, AbastecimientosListData, AbastecimientosListQuery (+5 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.10
@@ -403,12 +416,12 @@ Cohesion: 0.12
 Nodes (22): beginRefresh(), cancel(), checkNativeRefresher(), close(), complete(), componentDidUpdate(), connectedCallback(), destroyNativeRefresher() (+14 more)
 
 ### Community 45 - "Community 45"
-Cohesion: 0.09
-Nodes (19): at(), eo(), Fn(), G4(), Mn(), po, Qn(), Qt() (+11 more)
+Cohesion: 0.12
+Nodes (4): emit(), insert(), move(), Ne
 
 ### Community 46 - "Community 46"
-Cohesion: 0.11
-Nodes (7): Fo(), H(), jt(), sn(), Tn, _unregisterOnChange(), _unregisterOnDisabledChange()
+Cohesion: 0.10
+Nodes (7): It(), jt(), sn(), Tn, _unregisterOnChange(), _unregisterOnDisabledChange(), Xn()
 
 ### Community 47 - "Community 47"
 Cohesion: 0.07
@@ -424,11 +437,15 @@ Nodes (3): A(), k(), s
 
 ### Community 50 - "Community 50"
 Cohesion: 0.11
-Nodes (26): A6(), B2(), b6(), bg(), createEmbeddedView(), createEmbeddedViewImpl(), f3(), g3() (+18 more)
+Nodes (24): am(), B2(), b6(), bg(), f3(), g3(), h3(), Ib() (+16 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.07
-Nodes (11): es, Fr(), ID(), J6, rr(), Uo(), v(), Wm() (+3 more)
+Cohesion: 0.18
+Nodes (3): TicketsModule, routes, TicketsPage
+
+### Community 53 - "Community 53"
+Cohesion: 0.06
+Nodes (11): Zone, ZoneGeoJson, MapConfigService, ZoneAdmin, ZonePolygonGeometry, ZonesService, ZonasPageComponent, ZoneGeometry (+3 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.08
@@ -436,31 +453,27 @@ Nodes (6): componentDidRender(), componentWillLoad(), disabledChanged(), emitSty
 
 ### Community 56 - "Community 56"
 Cohesion: 0.08
-Nodes (4): e8, enableGesture(), enableScroll(), isDisabled()
+Nodes (5): disableGesture(), disableScroll(), e8, fromLocalValue(), XD
 
 ### Community 57 - "Community 57"
 Cohesion: 0.08
-Nodes (7): fe, getBoolean(), getNumber(), Gw, $o(), wn(), Zi()
+Nodes (7): dc(), enableGesture(), enableScroll(), getBoolean(), getNumber(), Gw, Zi()
 
 ### Community 58 - "Community 58"
-Cohesion: 0.09
-Nodes (5): hc(), Ka(), kD, Uw, Xw
+Cohesion: 0.06
+Nodes (7): f9, hc(), Ka(), kD, N8, Uw, Xw
 
 ### Community 59 - "Community 59"
-Cohesion: 0.12
-Nodes (21): _9(), aa(), e0(), Eg(), element(), F2(), F4(), fi() (+13 more)
+Cohesion: 0.09
+Nodes (26): _9(), aa(), Ah(), e0(), E1(), E4(), Eg(), element() (+18 more)
+
+### Community 60 - "Community 60"
+Cohesion: 0.06
+Nodes (6): addToWindow(), cd(), findTestabilityInTree(), o8, _s(), Sw()
 
 ### Community 61 - "Community 61"
 Cohesion: 0.12
 Nodes (20): Ke(), be(), bt(), c(), ct(), de(), ee(), fe() (+12 more)
-
-### Community 63 - "Community 63"
-Cohesion: 0.09
-Nodes (7): disableGesture(), disableScroll(), fromLocalValue(), G2(), Ht, W(), XD
-
-### Community 64 - "Community 64"
-Cohesion: 0.16
-Nodes (3): routes, ConfiguracionPage, ConfiguracionModule
 
 ### Community 65 - "Community 65"
 Cohesion: 0.13
@@ -471,8 +484,8 @@ Cohesion: 0.08
 Nodes (23): angularCompilerOptions, strictTemplates, compileOnSave, compilerOptions, baseUrl, declaration, downlevelIteration, experimentalDecorators (+15 more)
 
 ### Community 68 - "Community 68"
-Cohesion: 0.13
-Nodes (5): formatOptionsChanged(), enable(), ot, rt(), Z
+Cohesion: 0.14
+Nodes (4): formatOptionsChanged(), ot, rt(), Z
 
 ### Community 69 - "Community 69"
 Cohesion: 0.14
@@ -483,8 +496,8 @@ Cohesion: 0.15
 Nodes (17): buttonClick(), buttonsChanged(), callButtonHandler(), componentDidLoad(), componentWillLoad(), connectedCallback(), dismiss(), getButtonId() (+9 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.11
-Nodes (4): addToWindow(), q6(), ri(), xl()
+Cohesion: 0.08
+Nodes (7): eo(), po, q6(), ri(), set(), xl(), Zn()
 
 ### Community 72 - "Community 72"
 Cohesion: 0.13
@@ -499,23 +512,27 @@ Cohesion: 0.15
 Nodes (15): calculateOptsWidth(), canStart(), close(), closeOpened(), connectedCallback(), disabledChanged(), fireSwipeEvent(), getOptions() (+7 more)
 
 ### Community 75 - "Community 75"
-Cohesion: 0.14
-Nodes (6): _anyControls(), _applyFormState(), constructor(), _forEachChild(), reset(), setValue()
+Cohesion: 0.16
+Nodes (4): _anyControls(), _forEachChild(), reset(), setValue()
 
 ### Community 76 - "Community 76"
-Cohesion: 0.10
-Nodes (4): dn, f(), lt(), Pe
+Cohesion: 0.13
+Nodes (3): fe, lt(), Pe
 
 ### Community 77 - "Community 77"
-Cohesion: 0.22
+Cohesion: 0.28
 Nodes (5): go(), ki(), Qo(), registerOnDisabledChange(), Rn()
+
+### Community 78 - "Community 78"
+Cohesion: 0.14
+Nodes (4): _applyFormState(), enable(), J(), Le()
 
 ### Community 79 - "Community 79"
 Cohesion: 0.14
 Nodes (7): AuthService, SessionUser, UserRole, LoginPayload, LoginResponse, SessionService, TopbarComponent
 
 ### Community 80 - "Community 80"
-Cohesion: 0.15
+Cohesion: 0.18
 Nodes (4): UsuariosPageComponent, UsuariosModule, routes, UsuariosRoutingModule
 
 ### Community 81 - "Community 81"
@@ -531,12 +548,16 @@ Cohesion: 0.12
 Nodes (4): b(), He(), N, o()
 
 ### Community 84 - "Community 84"
-Cohesion: 0.17
-Nodes (9): ArqueoRoutingModule, routes, ArqueoModule, ArqueoService, ArqueoDaily, ArqueoDetailItem, ArqueoSummaryItem, ArqueoDailyQuery (+1 more)
+Cohesion: 0.12
+Nodes (11): ArqueoRoutingModule, routes, ArqueoModule, ArqueoService, ApiResponse, ArqueoDetailItem, ArqueoSummaryItem, ApiBaseService (+3 more)
 
 ### Community 85 - "Community 85"
 Cohesion: 0.13
 Nodes (14): disconnectedCallback(), getSegmentContents(), handleScroll(), handleScrollStart(), resetScrollEndTimeout(), setContent(), componentDidLoad(), disconnectedCallback() (+6 more)
+
+### Community 86 - "Community 86"
+Cohesion: 0.18
+Nodes (3): AuthService, User, OfflineAuthCache
 
 ### Community 87 - "Community 87"
 Cohesion: 0.17
@@ -562,21 +583,21 @@ Nodes (11): componentDidLoad(), componentWillLoad(), emitValueChange(), getHintT
 Cohesion: 0.16
 Nodes (10): autoscroll(), complete(), completeReorder(), connectedCallback(), disabledChanged(), disconnectedCallback(), itemIndexForTop(), onEnd() (+2 more)
 
+### Community 94 - "Community 94"
+Cohesion: 0.18
+Nodes (3): AbastecimientoModule, routes, AbastecimientoPage
+
 ### Community 95 - "Community 95"
 Cohesion: 0.18
 Nodes (3): routes, ArqueoPage, ArqueoModule
 
 ### Community 96 - "Community 96"
-Cohesion: 0.25
-Nodes (5): ArqueoService, ArqueoApiData, ArqueoLocalCache, ArqueoDaily, ArqueoItem
+Cohesion: 0.38
+Nodes (4): ArqueoService, ArqueoApiData, ArqueoDaily, ArqueoItem
 
 ### Community 97 - "Community 97"
 Cohesion: 0.12
 Nodes (16): angularCompilerOptions, strictTemplates, compileOnSave, compilerOptions, allowSyntheticDefaultImports, baseUrl, experimentalDecorators, lib (+8 more)
-
-### Community 98 - "Community 98"
-Cohesion: 0.14
-Nodes (7): ZoneGeoJson, MapConfigService, NotificationService, ZoneGeometry, ZonasModule, routes, ZonasRoutingModule
 
 ### Community 102 - "Community 102"
 Cohesion: 0.12
@@ -587,15 +608,15 @@ Cohesion: 0.17
 Nodes (8): componentDidLoad(), connectedCallback(), dismiss(), onIsOpenChange(), present(), render(), renderLoadingMessage(), triggerChanged()
 
 ### Community 105 - "Community 105"
-Cohesion: 0.25
-Nodes (8): AbastecimientosFilters, AbastecimientosListData, AbastecimientosListQuery, AbastecimientosPagination, PrintStatus, SyncStatus, ZoneMethod, AbastecimientosService
+Cohesion: 0.18
+Nodes (3): BluetoothPrinterAdapter, separator, PrinterValidation
 
 ### Community 106 - "Community 106"
 Cohesion: 0.20
 Nodes (6): AdminLayoutComponent, AuthLayoutComponent, BreadcrumbsComponent, NAVIGATION_ITEMS, AppRoutingModule, routes
 
 ### Community 107 - "Community 107"
-Cohesion: 0.19
+Cohesion: 0.16
 Nodes (6): User, UserAdmin, UserCreatePayload, UsersService, UserStatusApi, UserUpdatePayload
 
 ### Community 108 - "Community 108"
@@ -607,8 +628,8 @@ Cohesion: 0.14
 Nodes (13): ignore, autoload, psr-4, config, audit, description, name, App\\ (+5 more)
 
 ### Community 114 - "Community 114"
-Cohesion: 0.23
-Nodes (3): Zone, ZoneAdmin, ZonesService
+Cohesion: 0.16
+Nodes (7): createComponent(), createEmbeddedView(), createEmbeddedViewImpl(), da(), ec, lr(), tc
 
 ### Community 115 - "Community 115"
 Cohesion: 0.16
@@ -623,16 +644,20 @@ Cohesion: 0.26
 Nodes (3): Closure, Request, Router
 
 ### Community 120 - "Community 120"
-Cohesion: 0.26
-Nodes (4): ApiResponse, ApiBaseService, ProductAdmin, ZonePolygonGeometry
+Cohesion: 0.22
+Nodes (7): TicketsService, TicketDetail, TicketFilters, TicketsListData, TicketsListQuery, TicketsPagination, TicketStatus
 
 ### Community 121 - "Community 121"
 Cohesion: 0.18
 Nodes (3): activatedChanged(), componentDidLoad(), getFab()
 
+### Community 123 - "Community 123"
+Cohesion: 0.23
+Nodes (5): OpenStatusDialogOptions, StatusDialogService, StatusDialogComponent, StatusDialogData, StatusDialogVariant
+
 ### Community 124 - "Community 124"
-Cohesion: 0.15
-Nodes (3): g1(), Gn(), Nn()
+Cohesion: 0.06
+Nodes (9): constructor(), dn, Fr(), g1(), Gn(), Nn(), rr(), Uo() (+1 more)
 
 ### Community 126 - "Community 126"
 Cohesion: 0.26
@@ -651,12 +676,12 @@ Cohesion: 0.21
 Nodes (5): addIO(), componentDidLoad(), disconnectedCallback(), removeIO(), srcChanged()
 
 ### Community 131 - "Community 131"
-Cohesion: 0.21
-Nodes (7): _e, G(), me(), mi(), no(), to(), yo()
+Cohesion: 0.06
+Nodes (22): an(), co(), _e, F1(), Fn(), G(), get(), je() (+14 more)
 
 ### Community 132 - "Community 132"
-Cohesion: 0.20
-Nodes (3): Gi, Wi(), Yi()
+Cohesion: 0.07
+Nodes (5): ct(), Gi, L(), Wi(), Yi()
 
 ### Community 133 - "Community 133"
 Cohesion: 0.22
@@ -669,6 +694,10 @@ Nodes (3): connectedCallback(), styleMainElement(), updateState()
 ### Community 135 - "Community 135"
 Cohesion: 0.29
 Nodes (7): callOptionHandler(), findOptionFromEvent(), getValues(), render(), renderCheckboxOptions(), renderRadioOptions(), setChecked()
+
+### Community 137 - "Community 137"
+Cohesion: 0.23
+Nodes (5): BasePageHeaderComponent, SharedModule, NumberCurrencyPipe, StatusChipPipe, QuickStatCardComponent
 
 ### Community 138 - "Community 138"
 Cohesion: 0.29
@@ -693,10 +722,6 @@ Nodes (3): CoreModule, AppModule, AuthInterceptor
 ### Community 144 - "Community 144"
 Cohesion: 0.25
 Nodes (9): onWillDismiss(), renderDayPeriodPickerColumn(), renderHourPickerColumn(), renderMinutePickerColumn(), renderTime(), renderTimeLabel(), renderTimeOverlay(), renderTimePickerColumns() (+1 more)
-
-### Community 149 - "Community 149"
-Cohesion: 0.28
-Nodes (4): cc, f6(), Gs(), h6()
 
 ### Community 150 - "Community 150"
 Cohesion: 0.29
@@ -730,10 +755,6 @@ Nodes (7): decelerate(), emitColChange(), indexForY(), onEnd(), onMove(), setSel
 Cohesion: 0.43
 Nodes (3): isClickable(), render(), renderCard()
 
-### Community 167 - "Community 167"
-Cohesion: 0.29
-Nodes (3): je(), nt(), St()
-
 ### Community 170 - "Community 170"
 Cohesion: 0.33
 Nodes (6): prefix, projectType, root, schematics, sourceRoot, app
@@ -753,10 +774,6 @@ Nodes (6): componentDidLoad(), componentDidUpdate(), connectedCallback(), onDomC
 ### Community 176 - "Community 176"
 Cohesion: 0.33
 Nodes (6): renderCombinedDatePickerColumn(), renderDatePickerColumns(), renderDayPickerColumn(), renderIndividualDatePickerColumns(), renderMonthPickerColumn(), renderYearPickerColumn()
-
-### Community 181 - "Community 181"
-Cohesion: 0.50
-Nodes (3): AbastecimientosModule, AbastecimientosRoutingModule, routes
 
 ### Community 183 - "Community 183"
 Cohesion: 0.40
@@ -783,24 +800,24 @@ Cohesion: 0.50
 Nodes (3): extends, files, include
 
 ## Knowledge Gaps
-- **317 isolated node(s):** `Request`, `name`, `description`, `type`, `php` (+312 more)
+- **319 isolated node(s):** `$schema`, `plugin`, `Request`, `name`, `description` (+314 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **72 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **64 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `_` connect `Community 0` to `Community 2`, `Community 131`, `Community 132`, `Community 5`, `Community 6`, `Community 137`, `Community 180`, `Community 11`, `Community 15`, `Community 16`, `Community 18`, `Community 19`, `Community 149`, `Community 23`, `Community 24`, `Community 25`, `Community 27`, `Community 156`, `Community 31`, `Community 32`, `Community 37`, `Community 167`, `Community 40`, `Community 168`, `Community 45`, `Community 46`, `Community 50`, `Community 178`, `Community 52`, `Community 51`, `Community 179`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 59`, `Community 60`, `Community 61`, `Community 62`, `Community 63`, `Community 66`, `Community 68`, `Community 197`, `Community 71`, `Community 75`, `Community 76`, `Community 77`, `Community 78`, `Community 208`, `Community 209`, `Community 210`, `Community 211`, `Community 85`, `Community 93`, `Community 101`, `Community 110`, `Community 111`, `Community 122`, `Community 123`, `Community 124`?**
-  _High betweenness centrality (0.280) - this node is a cross-community bridge._
+- **Why does `_` connect `Community 0` to `Community 2`, `Community 131`, `Community 132`, `Community 5`, `Community 6`, `Community 11`, `Community 15`, `Community 16`, `Community 18`, `Community 19`, `Community 23`, `Community 24`, `Community 25`, `Community 27`, `Community 156`, `Community 31`, `Community 32`, `Community 37`, `Community 40`, `Community 45`, `Community 46`, `Community 178`, `Community 50`, `Community 51`, `Community 179`, `Community 180`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 59`, `Community 60`, `Community 61`, `Community 62`, `Community 63`, `Community 66`, `Community 68`, `Community 197`, `Community 71`, `Community 75`, `Community 76`, `Community 77`, `Community 78`, `Community 210`, `Community 85`, `Community 93`, `Community 110`, `Community 111`, `Community 114`, `Community 122`, `Community 124`?**
+  _High betweenness centrality (0.279) - this node is a cross-community bridge._
 - **Why does `clearTimeout()` connect `Community 85` to `Community 0`, `Community 65`, `Community 130`, `Community 72`, `Community 104`, `Community 74`, `Community 174`, `Community 14`, `Community 21`?**
-  _High betweenness centrality (0.155) - this node is a cross-community bridge._
+  _High betweenness centrality (0.158) - this node is a cross-community bridge._
 - **Why does `clearInterval()` connect `Community 108` to `Community 10`, `Community 21`, `Community 94`?**
-  _High betweenness centrality (0.126) - this node is a cross-community bridge._
-- **What connects `Request`, `name`, `description` to the rest of the system?**
-  _317 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.127) - this node is a cross-community bridge._
+- **What connects `$schema`, `plugin`, `Request` to the rest of the system?**
+  _319 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.023883696780893044 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.02327556914712878 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.05289193302891933 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.04886128364389234 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.047619047619047616 - nodes in this community are weakly interconnected._
