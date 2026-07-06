@@ -15,9 +15,9 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
-    "lib": ["ES2022", "dom"],
+    "target": "ES2017",
+    "module": "ES2020",
+    "lib": ["ES2019", "dom"],
     "useDefineForClassFields": false,
     "skipLibCheck": true
   },

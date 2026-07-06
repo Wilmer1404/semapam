@@ -14,7 +14,10 @@ const config: CapacitorConfig = {
     }
   },
   android: {
-    allowMixedContent: false
+    allowMixedContent: true,
+    minWebViewVersion: 66,
+    webContentsDebuggingEnabled: false,
+    backgroundColor: '#ffffffff'
   }
 };
 

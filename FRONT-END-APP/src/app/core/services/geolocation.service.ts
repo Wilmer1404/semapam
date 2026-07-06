@@ -1,34 +1,44 @@
 import { Injectable } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { LocationPoint } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class GeolocationService {
+  private readonly isAndroidLowApi: boolean;
+
+  constructor() {
+    this.isAndroidLowApi = this.detectLegacyAndroid();
+  }
+
   async captureCurrentPosition(): Promise<LocationPoint> {
     await this.ensurePermissions();
+
+    const preciseTimeout = this.isAndroidLowApi ? 25000 : 12000;
+    const fallbackTimeout = this.isAndroidLowApi ? 35000 : 20000;
 
     try {
       const precisePosition = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
-        timeout: 12000,
+        timeout: preciseTimeout,
         maximumAge: 0
       });
       return this.toLocationPoint(precisePosition);
     } catch (preciseError) {
-      console.warn('[GPS] High-accuracy attempt failed. Retrying with balanced settings.', {
+      console.warn('[GPS] High-accuracy attempt failed. Retrying with relaxed settings.', {
         error: this.extractErrorMessage(preciseError)
       });
 
       try {
         const fallbackPosition = await Geolocation.getCurrentPosition({
           enableHighAccuracy: false,
-          timeout: 20000,
-          maximumAge: 15000
+          timeout: fallbackTimeout,
+          maximumAge: 30000
         });
         return this.toLocationPoint(fallbackPosition);
       } catch (fallbackError) {
         const combined =
-          'No se pudo obtener ubicación. ' +
+          'No se pudo obtener ubicacion. ' +
           `Intento preciso: ${this.extractErrorMessage(preciseError)}. ` +
           `Intento alternativo: ${this.extractErrorMessage(fallbackError)}`;
         console.error('[GPS] Location capture failed after retries', combined);
@@ -93,5 +103,23 @@ export class GeolocationService {
     }
 
     return String(error);
+  }
+
+  private detectLegacyAndroid(): boolean {
+    if (Capacitor.getPlatform() !== 'android') {
+      return false;
+    }
+
+    try {
+      const userAgent = navigator.userAgent || '';
+      const match = userAgent.match(/Android\s+(\d+)/i);
+      if (match && match[1]) {
+        const apiLevel = parseInt(match[1], 10);
+        return apiLevel > 0 && apiLevel <= 28;
+      }
+    } catch {
+    }
+
+    return false;
   }
 }

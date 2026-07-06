@@ -147,17 +147,29 @@ export class BluetoothPrinterAdapter implements PrinterAdapter {
     let secureError = '';
     let insecureError = '';
 
+    const isLegacyAndroid = this.deviceService.isAndroid9OrLower();
+
     try {
       await this.disconnectSafe();
-      await firstValueFrom(this.bluetoothSerial.connect(normalizedMac).pipe(timeout(12000)));
+      if (isLegacyAndroid) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+      await firstValueFrom(this.bluetoothSerial.connect(normalizedMac).pipe(timeout(20000)));
       return true;
     } catch (error) {
       secureError = this.errorToMessage(error, 'sin detalle');
-      // Fallback below tries insecure RFCOMM, required by some POS printers.
+    }
+
+    if (isLegacyAndroid) {
+      await new Promise((resolve) => setTimeout(resolve, 800));
     }
 
     try {
       await this.disconnectSafe();
+      if (isLegacyAndroid) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+
       const bridge = this.bluetoothSerial as unknown as {
         connectInsecure?: (address: string) => import('rxjs').Observable<unknown>;
       };
@@ -167,14 +179,25 @@ export class BluetoothPrinterAdapter implements PrinterAdapter {
         throw new Error(insecureError);
       }
 
-      await firstValueFrom(bridge.connectInsecure(normalizedMac).pipe(timeout(12000)));
+      await firstValueFrom(bridge.connectInsecure(normalizedMac).pipe(timeout(20000)));
       return true;
     } catch (error) {
       insecureError = this.errorToMessage(error, 'sin detalle');
-      throw new Error(
-        `Conexion Bluetooth fallida. Seguro: ${secureError || 'sin detalle'}. Inseguro: ${insecureError || 'sin detalle'}.`
-      );
     }
+
+    if (isLegacyAndroid) {
+      try {
+        await this.disconnectSafe();
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await firstValueFrom(this.bluetoothSerial.connect(normalizedMac).pipe(timeout(25000)));
+        return true;
+      } catch {
+      }
+    }
+
+    throw new Error(
+      `Conexion Bluetooth fallida. Seguro: ${secureError || 'sin detalle'}. Inseguro: ${insecureError || 'sin detalle'}.`
+    );
   }
 
   async disconnectSafe(): Promise<void> {
@@ -187,6 +210,14 @@ export class BluetoothPrinterAdapter implements PrinterAdapter {
 
   async debugWrite(): Promise<string[]> {
     const log: string[] = [];
+
+    const buildInfo = this.deviceService.getBuildInfo();
+    log.push(`Dispositivo: ${buildInfo.manufacturer} / ${buildInfo.model}`);
+    log.push(`Android SDK: ${buildInfo.sdkVersion} (Release: ${buildInfo.androidRelease})`);
+    log.push(`Plataforma: ${buildInfo.platform}`);
+
+    const permissionCheck = await this.deviceService.ensureBluetoothPermissions();
+    log.push(`Permisos BT: ${permissionCheck.granted ? 'OK' : 'FALLAN: ' + permissionCheck.missing.join(', ')}`);
 
     const config = await this.printerConfigService.getConfig();
     const mac = this.deviceService.normalizeMac(config.printerMac);
