@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">WaterApp</string>
-    <string name="title_activity_main">WaterApp</string>
+    <string name="app_name">SEMAPAM</string>
+    <string name="title_activity_main">SEMAPAM</string>
     <string name="package_name">com.credwebstudio.waterapp</string>
     <string name="custom_url_scheme">com.credwebstudio.waterapp</string>
 </resources>

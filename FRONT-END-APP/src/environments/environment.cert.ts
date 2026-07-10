@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   environmentLabel: 'CERT',
-  apiBaseUrl: 'https://dispensador-agua.creweb-studio.com'
+  apiBaseUrl: 'https://api-semapam.munimarcona.gob.pe'
 };

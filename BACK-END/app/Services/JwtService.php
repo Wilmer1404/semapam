@@ -13,7 +13,11 @@ final class JwtService
     public static function encode(array $payload): string
     {
         $issuedAt = time();
-        $ttlHours = (int) App::env('JWT_TTL_HOURS', 12);
+        $ttlHours = (int) App::env('JWT_TTL_HOURS', 0);
+        if ($ttlHours <= 0) {
+            $expirationSeconds = (int) App::env('JWT_EXPIRATION', 0);
+            $ttlHours = $expirationSeconds > 0 ? (int) ceil($expirationSeconds / 3600) : 12;
+        }
         $secret = (string) App::env('JWT_SECRET', 'change_this_jwt_secret');
 
         $tokenPayload = [

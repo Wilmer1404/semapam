@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.credwebstudio.waterapp',
-  appName: 'WaterApp',
+  appName: 'SEMAPAM',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {
@@ -16,7 +16,7 @@ const config: CapacitorConfig = {
   android: {
     allowMixedContent: true,
     minWebViewVersion: 66,
-    webContentsDebuggingEnabled: false,
+    webContentsDebuggingEnabled: true,
     backgroundColor: '#ffffffff'
   }
 };
