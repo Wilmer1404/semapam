@@ -1,16 +1,16 @@
-# Graph Report - APKSEMAPAM  (2026-07-06)
+# Graph Report - APKSEMAPAM  (2026-07-10)
 
 ## Corpus Check
-- 263 files · ~415,083 words
+- 264 files · ~415,438 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 864 nodes · 1397 edges · 77 communities (51 shown, 26 thin omitted)
+- 865 nodes · 1397 edges · 78 communities (52 shown, 26 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ed236faf`
+- Built from commit: `c1abff87`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -105,7 +105,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (77 total, 26 thin omitted)
+## Communities (78 total, 26 thin omitted)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.07
